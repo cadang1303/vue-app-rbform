@@ -34,7 +34,7 @@ export default {
 
 <style scoped>
 .stepper-wrapper {
-  width: 800px;
+  width: 400px;
   margin-top: auto;
   display: flex;
   justify-content: space-between;
@@ -89,18 +89,19 @@ export default {
   content: none;
 }
 .step-name {
-  font-family: "Noto Sans JP";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-}
-.step-counter {
-  font-family: "Noto Sans JP";
+  font-family: "Inter";
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 17px;
+  color: #333333;
+}
+.step-counter {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
   color: #ffffff;
 }
 </style>

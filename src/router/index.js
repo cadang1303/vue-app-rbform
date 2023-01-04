@@ -11,6 +11,18 @@ const routes = [
       import(/* webpackChunkName: "login-page" */ "@/views/LoginPage.vue"),
   },
   {
+    path: "/admin",
+    name: "admin-layout",
+    component: () => import("@/layout/AdminView.vue"),
+    children: [
+      {
+        path: "/",
+        name: "requests",
+        component: () => import("@/components/admin/RequestList.vue"),
+      },
+    ],
+  },
+  {
     path: "*",
     name: "notfound",
     component: () => import("@/views/NotFound"),

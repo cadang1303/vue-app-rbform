@@ -1,19 +1,35 @@
 export default {
   namespaced: true,
   state: {
+    formAccount: [],
+    formProfile: [],
+    formFinished: [],
     formRegister: [],
   },
   getters: {
+    getFormAccount: (state) => state.formAccount,
+    getFormProfile: (state) => state.formProfile,
+    getFormFinished: (state) => state.formFinished,
     getFormRegister: (state) => state.formRegister,
   },
   mutations: {
-    SET_FORM(state, form) {
-      state.multiform[form.name] = form;
+    SAVE_FORM(state, form) {
+      state[form.formName] = form;
     },
   },
   actions: {
-    setForm({ commit }, payload) {
-      commit("SET_FORM", payload);
+    saveForm({ commit, dispatch }, payload) {
+      commit("SAVE_FORM", payload);
+      if (payload.isLastForm) {
+        dispatch(
+          "notifications/addNotification",
+          {
+            type: "success",
+            message: "Registered succesfully!",
+          },
+          { root: true }
+        );
+      }
     },
   },
 };

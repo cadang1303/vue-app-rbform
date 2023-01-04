@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="input-container">
     <div class="form-group" :class="{ required: item.validation.required }">
       <label class="control-label" :for="item.key">{{ item.label }}</label>
       <small v-if="item.textSmall">{{ item.textSmall }}</small>
@@ -36,6 +36,14 @@
         :value="valueInput"
         :name="item.key"
         :list="item.list"
+        :placeholder="item.placeholder"
+        @onInput="onInput"
+      />
+      <InputPassword
+        v-if="item.type === PASSWORD"
+        :msg="item.msg"
+        :value="valueInput"
+        :name="item.key"
         :placeholder="item.placeholder"
         @onInput="onInput"
       />
@@ -83,15 +91,16 @@ import InputTextarea from "@/components/input/InputTextarea";
 import InputSalary from "@/components/input/InputSalary";
 import ImageForm from "@/components/input/ImageForm";
 import MultiSelect from "@/components/input/MultiSelect";
+import InputPassword from "@/components/input/InputPassword";
 import {
   TEXT,
-  DATE_RANGE,
   TEXTAREA,
   DATE,
   SELECT,
   MULTISELECT,
   DROPZONE,
   SALARY,
+  PASSWORD,
 } from "@/constants/index";
 
 export default {
@@ -108,13 +117,13 @@ export default {
     return {
       valueInput: "",
       TEXT,
-      DATE_RANGE,
       TEXTAREA,
       DATE,
       SELECT,
       MULTISELECT,
       DROPZONE,
       SALARY,
+      PASSWORD,
     };
   },
   watch: {
@@ -151,6 +160,7 @@ export default {
     InputSalary,
     ImageForm,
     MultiSelect,
+    InputPassword,
   },
 };
 </script>
@@ -186,14 +196,19 @@ export default {
   font-weight: 400;
   font-size: 12px;
   color: #666666;
-  margin: 4px;
+  margin: 4px 0;
 }
-div >>> .container {
-  width: 528px;
+.input-container >>> .form-container .form-control {
+  width: 450px;
 }
-
-div >>> .main .dropzone-container {
-  width: 844px;
-  height: 192px;
+.input-container >>> .main .dropzone-container {
+  width: 495px;
+}
+.input-container >>> .form-container .form-control-textarea {
+  width: 450px;
+}
+.input-container >>> .autocomplete-container {
+  width: 450px;
+  margin-top: 4px;
 }
 </style>

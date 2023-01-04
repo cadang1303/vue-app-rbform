@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="autocomplete-container">
     <label for="autocomplete">
       <div class="autocomplete" @click="visible = true">
         <img src="@/assets/icon/interfaces/search.svg" />

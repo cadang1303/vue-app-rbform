@@ -2,10 +2,10 @@
   <div class="main">
     <StepperComponent
       :currentStep="currentStep"
-      :steps="multiForm"
+      :steps="formRegister"
       @goToStep="goToStep"
     />
-    <div :class="{ 'form-container': !isSecondForm }">
+    <div class="form-container">
       <InputForm
         v-for="(item, index) in formData"
         :key="item.key"
@@ -17,41 +17,37 @@
         @onInputImg="onInputImg"
         @onRemoveImages="onRemoveImage"
       />
-
-      <div class="btn-add" @click="onAddCompany" v-if="isSecondForm">
-        <img src="@/assets/icon/interfaces/Plus.png" class="btn-plus-symbol" />
-        Thêm công ty
-      </div>
-
-      <div class="footer-btn">
-        <ButtonComponent
-          class="btn btn-cont"
-          @onClick="goNext"
-          :btnLabel="getSubmitBtn"
-        />
-        <ButtonComponent
-          v-if="!isFirstForm"
-          btnLabel="Quay lại"
-          class="btn btn-back"
-          @onClick="goBack"
-        />
-      </div>
+    </div>
+    <div class="footer-btn">
+      <ButtonComponent
+        class="btn btn-cont"
+        @onClick="goNext"
+        :btnLabel="getSubmitBtn"
+      />
+      <ButtonComponent
+        v-if="!isFirstForm"
+        btnLabel="Back"
+        class="btn btn-back"
+        @onClick="goBack"
+      />
+      <ButtonComponent btnLabel="Back to login" class="btn btn-back-login" />
     </div>
   </div>
 </template>
 
 <script>
-import { multiForm } from "@/data/form";
+import { formRegister } from "@/constants/register";
 import InputForm from "./InputForm";
 import ButtonComponent from "@/components/base/ButtonComponent";
-import StepperComponent from "./StepperComponent";
+import StepperComponent from "@/components/StepperComponent";
 import {
   validateDate,
   validateDigit,
   validateLength,
   validateRequired,
+  validateConfirm,
 } from "@/utils/validateForm";
-import { DATE, DATE_RANGE, SALARY } from "@/data/data";
+import { DATE, SALARY } from "@/constants/index";
 
 export default {
   props: {
@@ -66,8 +62,7 @@ export default {
   data() {
     return {
       isValid: false,
-      multiForm,
-      DATE_RANGE,
+      formRegister,
       DATE,
       SALARY,
     };
@@ -76,20 +71,17 @@ export default {
     isFirstForm() {
       return this.currentStep === 1;
     },
-    isSecondForm() {
-      return this.currentStep === 2;
-    },
     isLastForm() {
-      return this.currentStep === this.multiForm.length;
+      return this.currentStep === this.formRegister.length;
     },
     getSubmitBtn() {
-      return this.isLastForm ? "Hoàn thành" : "Tiếp";
+      return this.isLastForm ? "Complete" : "Next";
     },
   },
   watch: {
     currentStep: {
       handler() {
-        this.isValid = false;
+        this.isValid = true;
       },
     },
   },
@@ -122,7 +114,7 @@ export default {
       this.$emit("changeForm", this.currentStep - 1);
     },
     goNext() {
-      this.validate();
+      //   this.validate();
       let errBag = [];
       this.formData.forEach((item) => {
         if (item.msg) {
@@ -161,11 +153,14 @@ export default {
         if (item.type === SALARY) {
           validateDigit(item);
         }
+        if (item.key === "confirm") {
+          validateConfirm(this.formData);
+        }
       });
     },
     goToStep(step) {
       if (step > this.currentStep) {
-        this.validate();
+        // this.validate();
         let errBag = [];
 
         this.formData.forEach((item) => {
@@ -209,42 +204,16 @@ export default {
   background: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
-  width: 926px;
-  padding: 20px 32px 24px;
-  gap: 10px;
+  width: 530px;
+  padding: 19px 16px 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .footer-btn {
-  display: inline-flex;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-.footer-btn > button {
-  margin-right: 26px;
-}
-.btn-add {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
-  font-family: "Noto Sans";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  width: 151px;
-  height: 40px;
-  padding: 4px 8px;
-  color: #48647f;
-  background: #ffffff;
-  border: 1px solid #dcdcdc;
-  border-radius: 3px;
   margin-top: 24px;
-  cursor: pointer;
-}
-.btn-plus-symbol {
-  width: 20px;
-  height: 20px;
 }
 .btn:disabled {
   background: #dcdcdc;
@@ -263,12 +232,13 @@ export default {
   border: 1px solid #627d98;
   border-radius: 3px;
   cursor: pointer;
+  margin-right: 26px;
 }
 .btn-back {
   width: 102px;
   height: 40px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
   color: #666666;
   line-height: 24px;
@@ -276,5 +246,19 @@ export default {
   border: 1px solid #dcdcdc;
   border-radius: 3px;
   cursor: pointer;
+}
+.btn-back-login {
+  width: 150px;
+  height: 40px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  color: #666666;
+  line-height: 24px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: auto;
 }
 </style>

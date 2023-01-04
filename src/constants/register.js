@@ -1,4 +1,15 @@
-import { DATE, DROPZONE, MULTISELECT, PASSWORD, SALARY, SELECT, TEXT, TEXTAREA } from ".";
+import {
+  CITY_LIST,
+  DATE,
+  DROPZONE,
+  JOB_LIST,
+  MULTISELECT,
+  PASSWORD,
+  SALARY,
+  SELECT,
+  TEXT,
+  TEXTAREA,
+} from ".";
 
 export const formAccount = [
   {
@@ -7,6 +18,7 @@ export const formAccount = [
     label: "Username",
     type: TEXT,
     value: "",
+    msg: "",
     validation: {
       required: true,
       maxLength: 25,
@@ -18,6 +30,7 @@ export const formAccount = [
     label: "Password",
     type: PASSWORD,
     value: "",
+    msg: "",
     validation: {
       required: true,
       minLength: 8,
@@ -29,6 +42,7 @@ export const formAccount = [
     label: "Repeat Password",
     type: PASSWORD,
     value: "",
+    msg: "",
     validation: {
       required: true,
       minLength: 8,
@@ -43,6 +57,7 @@ export const formProfile = [
     label: "Fullname",
     type: TEXT,
     value: "",
+    msg: "",
     validation: {
       required: true,
       maxLength: 100,
@@ -54,6 +69,7 @@ export const formProfile = [
     label: "Birthday",
     type: DATE,
     value: "",
+    msg: "",
     validation: {
       required: true,
     },
@@ -63,7 +79,9 @@ export const formProfile = [
     key: "city",
     label: "City",
     type: SELECT,
+    list: CITY_LIST,
     value: "",
+    msg: "",
     validation: {
       required: false,
     },
@@ -73,7 +91,11 @@ export const formProfile = [
     key: "position",
     label: "Position",
     type: MULTISELECT,
-    value: "",
+    list: JOB_LIST,
+    textSmall: "Can select multiple",
+    placeholder: "Select position that you want",
+    value: [],
+    msg: "",
     validation: {
       required: false,
     },
@@ -84,6 +106,7 @@ export const formProfile = [
     label: "Describe Yourself",
     type: TEXTAREA,
     value: "",
+    msg: "",
     validation: {
       required: false,
       maxLength: 1000,
@@ -94,7 +117,10 @@ export const formProfile = [
     key: "avatar",
     label: "Avatar (only one)",
     type: DROPZONE,
-    value: "",
+    placeholder: "Drag & Drop",
+    triggerText: "or Click here",
+    value: [],
+    msg: "",
     validation: {
       required: false,
       max: 1,
@@ -109,6 +135,7 @@ export const formFinished = [
     label: "Reason",
     type: TEXTAREA,
     value: "",
+    msg: "",
     validation: {
       required: true,
       maxLength: 1000,
@@ -119,7 +146,9 @@ export const formFinished = [
     key: "salary",
     label: "Salary",
     type: SALARY,
+    currency: "VNĐ",
     value: "",
+    msg: "",
     validation: {
       required: true,
       maxLength: 10,
@@ -128,25 +157,25 @@ export const formFinished = [
 ];
 
 export const formRegister = [
-    {
-        id: 1,
-        step: 1,
-        name: "account",
-        label: "Account",
-        data: formAccount,
-    },
-    {
-        id: 2,
-        step: 2,
-        name: "profile",
-        label: "Profile",
-        data: formProfile,
-    },
-    {
-        id: 3,
-        step: 3,
-        name: "finished",
-        label: "Finished",
-        data: formFinished,
-    },
-]
+  {
+    id: 1,
+    step: 1,
+    name: "account",
+    label: "Account",
+    data: formAccount,
+  },
+  {
+    id: 2,
+    step: 2,
+    name: "profile",
+    label: "Profile",
+    data: formProfile,
+  },
+  {
+    id: 3,
+    step: 3,
+    name: "finished",
+    label: "Finished",
+    data: formFinished,
+  },
+];

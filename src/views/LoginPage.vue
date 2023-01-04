@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="login-container">
-      <LoginView />
+      <LoginView v-show="isShow" />
+    </div>
+    <div class="register-view">
+      <RegisterView />
     </div>
     <div class="register">
       <div class="register-box">
@@ -15,26 +18,34 @@
 <script>
 import LoginView from "@/components/views/LoginView.vue";
 import ButtonComponent from "@/components/base/ButtonComponent";
+import RegisterView from "@/components/views/RegisterView.vue";
 export default {
-  components: { LoginView, ButtonComponent },
+    components: { LoginView, ButtonComponent, RegisterView },
+  data() {
+    return {
+      isShow: false,
+    };
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .container {
-  position: relative;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
   height: 100vh;
   width: 100vw;
-  background: url("@/assets/why-mercury-it-background@2x.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
+  background: url("@/assets/why-mercury-it-background@2x.jpg") no-repeat center
+    center fixed;
   background-size: cover;
 }
 .login-container {
-  position: absolute;
-  top: 25%;
-  left: 40%;
-  z-index: 4;
+  z-index: 1;
+}
+.register-view {
+  z-index: 1;
 }
 .register {
   display: flex;
@@ -44,9 +55,7 @@ export default {
   height: 270px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
-  top: 35%;
-  left: 35%;
-  z-index: 3;
+  z-index: 0;
 }
 .register-box {
   display: flex;
