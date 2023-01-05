@@ -7,6 +7,7 @@
         :name="name"
         v-model="valueInput"
         :placeholder="placeholder"
+        :readonly="readonly"
         @input="handleInput"
       />
       <span class="currency">{{ currency }}</span>
@@ -42,6 +43,10 @@ export default {
     msg: {
       type: String,
       required: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

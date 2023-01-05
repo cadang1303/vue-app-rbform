@@ -11,6 +11,7 @@
       @onInputImg="onInputImg"
       @submitForm="submitForm"
       @changeForm="changeForm"
+      @backToLogin="backToLogin"
     />
   </div>
 </template>
@@ -80,6 +81,7 @@ export default {
   methods: {
     ...mapActions({
       saveForm: "formRegister/saveForm",
+      saveData: "formRegister/saveData",
     }),
     onInputImg(data) {
       this.formData.forEach((i) => {
@@ -123,50 +125,47 @@ export default {
         }
       });
     },
-    // toFormJSON(formData) {
-    //   let obj = {};
-    //   let arr = [];
-    //   let data = {};
+    toFormJSON(formData) {
+      let data = {};
 
-    //   for (let i = 0; i < formData.length; i++) {
-    //     if (formData[i].fields) {
-    //       formData[i].fields.forEach((c) => {
-    //         obj[c.name] = c.value;
-    //       });
-    //       arr.push(obj);
-    //       this.form[formData[i].type] = {};
-    //       if (i === arr.length - 1) {
-    //         for (let j = 0; j < arr.length; j++) {
-    //           this.form[formData[i].type][j] = arr[j];
-    //         }
-    //       }
-    //     } else if (Array.isArray(formData[i].value)) {
-    //       if (formData[i].value.length > 0) {
-    //         for (let j = 0; j < formData[i].value.length; j++) {
-    //           data[j] = formData[i].value[j];
-    //         }
-    //         this.form[formData[i].name] = data;
-    //         data = {};
-    //       } else this.form[formData[i].name] = {};
-    //     } else this.form[formData[i].name] = formData[i].value;
-    //   }
-    // },
+      for (let i = 0; i < formData.length; i++) {
+        if (Array.isArray(formData[i].value)) {
+          if (formData[i].value.length > 0) {
+            for (let j = 0; j < formData[i].value.length; j++) {
+              data[j] = formData[i].value[j];
+            }
+            this.form[formData[i].key] = data;
+            data = {};
+          } else this.form[formData[i].key] = {};
+        } else this.form[formData[i].key] = formData[i].value;
+      }
+    },
     submitForm() {
       this.saveForm({
         formData: this.formData,
         formName: this.formName,
         isLastForm: this.isLastForm,
       });
-      //   this.toFormJSON(this.formData);
+      this.toFormJSON(this.formData);
       if (this.isLastForm) {
-        // console.log(this.form);
-        this.$router.push("/");
+        this.form = {
+          ...this.form,
+          id: (Math.random().toString(36) + Date.now().toString(36)).substring(
+            2
+          ),
+        };
+        this.saveData(this.form);
+        console.log(this.form);
+        this.$emit("backToLogin");
       } else this.currentStep++;
     },
     changeForm(step) {
       if (step < this.formRegister.length) {
         this.currentStep = step;
       }
+    },
+    backToLogin() {
+      this.$emit("backToLogin");
     },
   },
 };

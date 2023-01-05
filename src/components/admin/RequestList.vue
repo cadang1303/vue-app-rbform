@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="profile">
+          <td class="profile" @click="goToView">
             <div class="avatar"><img src="@/assets/avatar.png" /></div>
             <div class="name">
               <p class="fullname">Trình ngur</p>
@@ -25,7 +25,7 @@
           <td class="status"><span class="status-Pending">Pending</span></td>
         </tr>
         <tr>
-          <td class="profile">
+          <td class="profile" @click="goToView">
             <div class="avatar"><img src="@/assets/avatar.png" /></div>
             <div class="name">
               <p class="fullname">Trình ngur</p>
@@ -38,7 +38,7 @@
           <td class="status"><span class="status-Approved">Approved</span></td>
         </tr>
         <tr>
-          <td class="profile">
+          <td class="profile" @click="goToView">
             <div class="avatar"><img src="@/assets/avatar.png" /></div>
             <div class="name">
               <p class="fullname">Trình ngur</p>
@@ -62,13 +62,19 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goToView() {
+      this.$router.push("/admin/request");
+    },
+  },
+};
 </script>
 
 <style scoped>
 .table-container {
   width: 100%;
-  height: 90vh;
+  height: 100%;
   background: #fff;
   padding: 24px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -99,6 +105,9 @@ th {
 }
 th:not(.head-salary, .head-created, .head-status) {
   text-align: left;
+}
+tbody tr td.profile {
+  cursor: pointer;
 }
 td {
   font-family: "Noto Sans";
@@ -156,7 +165,7 @@ td:not(.profile, .city) {
   position: absolute;
   display: flex;
   align-items: center;
-  bottom: 10%;
+  bottom: 7%;
   right: 5%;
 }
 .pagination {

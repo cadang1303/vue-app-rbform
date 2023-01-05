@@ -1,15 +1,19 @@
 <template>
   <div class="container">
-    <div class="login-container">
-      <LoginView v-show="isShow" />
+    <div class="login-container" v-if="isShow">
+      <LoginView />
     </div>
-    <div class="register-view">
-      <RegisterView />
+    <div class="register-container" v-else>
+      <RegisterView @backToLogin="backToLogin" />
     </div>
     <div class="register">
       <div class="register-box">
         <p class="register-text">Don't have an account?</p>
-        <ButtonComponent btn-label="Register" class="btn-register" />
+        <ButtonComponent
+          btn-label="Register"
+          class="btn-register"
+          @onClick="onRegisterForm"
+        />
       </div>
     </div>
   </div>
@@ -20,11 +24,19 @@ import LoginView from "@/components/views/LoginView.vue";
 import ButtonComponent from "@/components/base/ButtonComponent";
 import RegisterView from "@/components/views/RegisterView.vue";
 export default {
-    components: { LoginView, ButtonComponent, RegisterView },
+  components: { LoginView, ButtonComponent, RegisterView },
   data() {
     return {
-      isShow: false,
+      isShow: true,
     };
+  },
+  methods: {
+    onRegisterForm() {
+      this.isShow = false;
+    },
+    backToLogin() {
+      this.isShow = true;
+    },
   },
 };
 </script>
@@ -32,7 +44,6 @@ export default {
 <style scoped>
 .container {
   display: flex;
-
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -42,9 +53,10 @@ export default {
   background-size: cover;
 }
 .login-container {
+  margin-right: 100px;
   z-index: 1;
 }
-.register-view {
+.register-container {
   z-index: 1;
 }
 .register {

@@ -13,6 +13,7 @@
           v-model="keyword"
           autocomplete="off"
           :placeholder="placeholder"
+          :readonly="readonly"
           @input="handleInput"
         />
       </div>
@@ -38,6 +39,10 @@ export default {
     placeholder: {
       type: String,
       default: () => "Typing...",
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

@@ -16,6 +16,9 @@ export default {
     SAVE_FORM(state, form) {
       state[form.formName] = form;
     },
+    SAVE_DATA(state, data) {
+      state.formRegister = data;
+    },
   },
   actions: {
     saveForm({ commit, dispatch }, payload) {
@@ -30,6 +33,9 @@ export default {
           { root: true }
         );
       }
+    },
+    saveData({ commit }, payload) {
+      commit("SAVE_DATA", payload);
     },
   },
 };

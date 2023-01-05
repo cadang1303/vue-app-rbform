@@ -7,6 +7,7 @@
       :name="name"
       v-model="valueInput"
       :placeholder="placeholder"
+      :readonly="readonly"
       @input="handleInput"
     />
     <span v-if="msg" class="msg-text">
@@ -36,6 +37,10 @@ export default {
     msg: {
       type: String,
       required: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

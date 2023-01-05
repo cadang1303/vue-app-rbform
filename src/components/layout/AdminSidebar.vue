@@ -18,8 +18,8 @@ export default {
   data() {
     return {
       links: [
-        { name: "Requests", url: "/admin" },
-        { name: "Logout", url: "/logout" },
+        { name: "Requests", url: "/admin/request-list" },
+        { name: "Logout", url: "/" },
       ],
     };
   },

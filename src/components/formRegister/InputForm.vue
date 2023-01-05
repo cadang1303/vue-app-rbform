@@ -10,6 +10,7 @@
         :value="valueInput"
         :maxLength="item.validation.maxLength"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onInput="onInput"
       />
       <InputTextarea
@@ -20,6 +21,7 @@
         :onCounter="item.onCounter"
         :maxLength="item.validation.maxLength"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onInput="onInput"
       />
       <InputDate
@@ -28,6 +30,7 @@
         :name="item.key"
         :value="valueInput"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onInput="onInput"
       />
       <InputSelect
@@ -37,6 +40,7 @@
         :name="item.key"
         :list="item.list"
         :placeholder="item.placeholder"
+        :disabled="readonly"
         @onInput="onInput"
       />
       <InputPassword
@@ -45,6 +49,7 @@
         :value="valueInput"
         :name="item.key"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onInput="onInput"
       />
       <MultiSelect
@@ -54,6 +59,7 @@
         :list="item.list"
         :chosenList="item.value"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onSelectDropdown="onSelectJob"
         @onRemoveDropdown="onRemoveJob"
       />
@@ -77,6 +83,7 @@
         :value="valueInput"
         :currency="item.currency"
         :placeholder="item.placeholder"
+        :readonly="readonly"
         @onInput="onInput"
       />
     </div>
@@ -111,6 +118,10 @@ export default {
     },
     value: {
       type: [String, Array, Number],
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

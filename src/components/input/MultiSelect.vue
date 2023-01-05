@@ -4,6 +4,7 @@
       :items="filteredList"
       :selectedArr="chosenList"
       :placeholder="placeholder"
+      :readonly="readonly"
       @onSelect="onSelectDropdown"
       @onCancel="onRemoveDropdown"
       @onInput="onInputKeyword"
@@ -42,6 +43,10 @@ export default {
     msg: {
       type: String,
       required: false,
+    },
+    readonly: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

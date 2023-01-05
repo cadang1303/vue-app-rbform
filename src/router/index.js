@@ -16,9 +16,14 @@ const routes = [
     component: () => import("@/layout/AdminView.vue"),
     children: [
       {
-        path: "/",
-        name: "requests",
+        path: "request-list",
+        name: "request-list",
         component: () => import("@/components/admin/RequestList.vue"),
+      },
+      {
+        path: "request",
+        name: "request-item",
+        component: () => import("@/components/admin/RequestItem.vue"),
       },
     ],
   },

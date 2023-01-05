@@ -11,6 +11,7 @@
         :key="item.key"
         :item="item"
         :value="item.value"
+        :readonly="readonly"
         @onSelectJob="onSelectJob"
         @onRemoveJob="onRemoveJob"
         @onInput="(value) => onInput(value, index)"
@@ -30,7 +31,11 @@
         class="btn btn-back"
         @onClick="goBack"
       />
-      <ButtonComponent btnLabel="Back to login" class="btn btn-back-login" />
+      <ButtonComponent
+        btnLabel="Back to login"
+        class="btn btn-back-login"
+        @onClick="backToLogin"
+      />
     </div>
   </div>
 </template>
@@ -58,6 +63,10 @@ export default {
     currentStep: {
       type: Number,
     },
+    readonly: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   data() {
     return {
@@ -81,7 +90,7 @@ export default {
   watch: {
     currentStep: {
       handler() {
-        this.isValid = true;
+        this.isValid = false;
       },
     },
   },
@@ -114,7 +123,7 @@ export default {
       this.$emit("changeForm", this.currentStep - 1);
     },
     goNext() {
-      //   this.validate();
+      // this.validate();
       let errBag = [];
       this.formData.forEach((item) => {
         if (item.msg) {
@@ -187,6 +196,9 @@ export default {
         }
       } else this.$emit("changeForm", step);
     },
+    backToLogin() {
+      this.$emit("backToLogin");
+    },
   },
   components: {
     InputForm,
@@ -235,7 +247,7 @@ export default {
   margin-right: 26px;
 }
 .btn-back {
-  width: 102px;
+  min-width: 102px;
   height: 40px;
   font-style: normal;
   font-weight: 700;
@@ -248,7 +260,7 @@ export default {
   cursor: pointer;
 }
 .btn-back-login {
-  width: 150px;
+  min-width: 102px;
   height: 40px;
   font-style: normal;
   font-weight: 700;

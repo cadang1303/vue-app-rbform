@@ -20,6 +20,7 @@ export default {
 <style>
 .view-container {
   width: calc(100% - 250px);
+  height: 100vh;
   margin-left: 250px;
   padding: 24px;
   background: #eee;

@@ -6,6 +6,7 @@
       :name="name"
       v-model="valueInput"
       :class="{ 'form-error': msg }"
+      :disabled="disabled"
       @change="handleInput"
     >
       <option selected hidden>{{ placeholder }}</option>
@@ -40,6 +41,10 @@ export default {
     msg: {
       type: String,
       required: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: () => false,
     },
   },
   data() {

@@ -5,6 +5,7 @@
       :class="{ 'form-textarea-error': msg }"
       :name="name"
       v-model="valueInput"
+      :readonly="readonly"
       @input="handleInput"
     ></textarea>
     <div
@@ -40,6 +41,10 @@ export default {
       required: false,
     },
     onCounter: {
+      type: Boolean,
+      default: () => false,
+    },
+    readonly: {
       type: Boolean,
       default: () => false,
     },
