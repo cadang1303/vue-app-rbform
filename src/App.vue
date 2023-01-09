@@ -1,7 +1,7 @@
 <template>
   <div id="app">
+    <SpinLoader class="loading" />
     <router-view />
-    <SpinLoader />
     <NotificationList />
   </div>
 </template>

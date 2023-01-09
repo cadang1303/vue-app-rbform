@@ -8,7 +8,7 @@ const routes = [
     path: "/",
     name: "login-page",
     component: () =>
-      import(/* webpackChunkName: "login-page" */ "@/views/LoginPage.vue"),
+      import(/* webpackChunkName: "login-page" */ "@/views/HomePage.vue"),
   },
   {
     path: "/admin",
@@ -21,9 +21,9 @@ const routes = [
         component: () => import("@/components/admin/RequestList.vue"),
       },
       {
-        path: "request",
-        name: "request-item",
-        component: () => import("@/components/admin/RequestItem.vue"),
+        path: "request/:id",
+        name: "request-view",
+        component: () => import("@/components/admin/RequestView.vue"),
       },
     ],
   },

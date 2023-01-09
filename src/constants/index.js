@@ -1,3 +1,5 @@
+export const API_URL = "http://localhost:4000/";
+
 export const PASSWORD = "password";
 export const TEXT = "text";
 export const TEXTAREA = "textarea";
@@ -38,3 +40,11 @@ export const CITY_LIST = [
   { name: "Huế", value: "Hue" },
   { name: "Cần Thơ", value: "Can Tho" },
 ];
+
+export const STATUS = {
+  0: "Pending",
+  1: "Approved",
+  2: "Rejected",
+};
+
+export const TABLE_MAX_RECORDS = 10;

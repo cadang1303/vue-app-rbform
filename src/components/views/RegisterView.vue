@@ -148,14 +148,9 @@ export default {
       });
       this.toFormJSON(this.formData);
       if (this.isLastForm) {
-        this.form = {
-          ...this.form,
-          id: (Math.random().toString(36) + Date.now().toString(36)).substring(
-            2
-          ),
-        };
         this.saveData(this.form);
-        console.log(this.form);
+        // console.log(this.form);
+        this.$emit("onSignUp", this.form);
         this.$emit("backToLogin");
       } else this.currentStep++;
     },

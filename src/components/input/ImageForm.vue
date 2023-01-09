@@ -70,8 +70,4 @@ export default {
 };
 </script>
 
-<style scoped>
-div.form-container >>> .btn-upload {
-  display: none;
-}
-</style>
+<style scoped></style>

@@ -181,13 +181,13 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 10px;
 }
 .control-label {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   color: #333333;
+  margin-top: 10px;
   margin-bottom: 6px;
 }
 .form-group.required .control-label:before {

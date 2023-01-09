@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="login-container" v-if="isShow">
-      <LoginView />
+      <LoginView :form="formData" @onLogin="onLogin" @onInput="onInput" />
     </div>
     <div class="register-container" v-else>
-      <RegisterView @backToLogin="backToLogin" />
+      <RegisterView @backToLogin="backToLogin" @onSignUp="onSignUp" />
     </div>
     <div class="register">
       <div class="register-box">
@@ -23,16 +23,71 @@
 import LoginView from "@/components/views/LoginView.vue";
 import ButtonComponent from "@/components/base/ButtonComponent";
 import RegisterView from "@/components/views/RegisterView.vue";
+import { mapActions } from "vuex";
+import axios from "axios";
+import { API_URL } from "@/constants";
+import { formLogin } from "@/constants/login.js";
+
 export default {
   components: { LoginView, ButtonComponent, RegisterView },
   data() {
     return {
       isShow: true,
+      formData: [],
+      form: {},
     };
   },
+  created() {
+    this.formData = this.getFormData;
+  },
+  computed: {
+    getFormData() {
+      return JSON.parse(JSON.stringify(formLogin));
+    },
+  },
+  watch: {
+    formData: {
+      handler() {
+        this.formData.forEach((item) => {
+          this.form[item.key] = item.value;
+        });
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
   methods: {
+    ...mapActions({
+      onLoading: "loading/setLoading",
+      toast: "notifications/addNotification",
+    }),
+    onInput(payload, id) {
+      this.formData.find((item) => item.id === id).value = payload;
+    },
+    onLogin() {
+      // this.onLoading(true);
+      axios
+        .post(`${API_URL}auth/login`, this.form)
+        .then(() => {
+          this.toast({
+            type: "success",
+            message: "Login Successfully",
+          });
+          this.formData.forEach((item) => (item.value = ""));
+        })
+        .catch(() => {
+          this.toast({
+            type: "error",
+            message: "Login Failed",
+          });
+        });
+    },
     onRegisterForm() {
+      // this.onLoading(true);
       this.isShow = false;
+    },
+    onSignUp(form) {
+      this.$store.dispatch("users/onSignUp", form);
     },
     backToLogin() {
       this.isShow = true;
@@ -51,6 +106,7 @@ export default {
   background: url("@/assets/why-mercury-it-background@2x.jpg") no-repeat center
     center fixed;
   background-size: cover;
+  z-index: -99;
 }
 .login-container {
   margin-right: 100px;

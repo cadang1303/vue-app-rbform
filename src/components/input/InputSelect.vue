@@ -9,8 +9,7 @@
       :disabled="disabled"
       @change="handleInput"
     >
-      <option selected hidden>{{ placeholder }}</option>
-      <option v-for="item in list" :key="item.code" :value="item.name">
+      <option v-for="item in list" :key="item.code" :value="item.value">
         <span>{{ item.name }}</span>
       </option>
     </select>

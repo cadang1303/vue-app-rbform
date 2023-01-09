@@ -19,19 +19,18 @@ export default {
     SAVE_DATA(state, data) {
       state.formRegister = data;
     },
+    CLEAR_FORM_REGISTER(state) {
+      state.formAccount = [];
+      state.formProfile = [];
+      state.formFinished = [];
+      state.formRegister = [];
+    },
   },
   actions: {
-    saveForm({ commit, dispatch }, payload) {
+    saveForm({ commit }, payload) {
       commit("SAVE_FORM", payload);
       if (payload.isLastForm) {
-        dispatch(
-          "notifications/addNotification",
-          {
-            type: "success",
-            message: "Registered succesfully!",
-          },
-          { root: true }
-        );
+        commit("CLEAR_FORM_REGISTER");
       }
     },
     saveData({ commit }, payload) {

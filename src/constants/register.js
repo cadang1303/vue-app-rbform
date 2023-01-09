@@ -65,7 +65,7 @@ export const formProfile = [
   },
   {
     id: 5,
-    key: "dob",
+    key: "birthday",
     label: "Birthday",
     type: DATE,
     value: "",
@@ -76,7 +76,7 @@ export const formProfile = [
   },
   {
     id: 6,
-    key: "city",
+    key: "address",
     label: "City",
     type: SELECT,
     list: CITY_LIST,
@@ -102,7 +102,7 @@ export const formProfile = [
   },
   {
     id: 8,
-    key: "about",
+    key: "describe_yourself",
     label: "Describe Yourself",
     type: TEXTAREA,
     value: "",

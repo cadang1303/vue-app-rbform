@@ -1,29 +1,46 @@
 <template>
   <div class="login-form">
     <p class="login-title">LOGIN</p>
-    <InputField placeholder="Username" />
-    <InputPassword placeholder="Password" />
+    <InputForm
+      v-for="item in form"
+      :key="item.key"
+      :item="item"
+      :value="item.value"
+      @onInput="(value) => onInput(value, item.id)"
+    />
     <ButtonComponent btn-label="Login" class="btn-login" @onClick="onLogin" />
   </div>
 </template>
 
 <script>
-import InputField from "@/components/input/InputField";
-import InputPassword from "@/components/input/InputPassword";
 import ButtonComponent from "@/components/base/ButtonComponent";
+import InputForm from "../formRegister/InputForm.vue";
+import { formLogin } from "@/constants/login.js";
 
 export default {
   components: {
-    InputField,
-    InputPassword,
     ButtonComponent,
+    InputForm,
+  },
+  props: {
+    value: {
+      type: String,
+    },
+    form: {
+      type: Array,
+    },
+  },
+  data() {
+    return {
+      formLogin,
+    };
   },
   methods: {
     onLogin() {
-      this.$store.dispatch("notifications/addNotification", {
-        type: "success",
-        message: "Login successfully!",
-      });
+      this.$emit("onLogin");
+    },
+    onInput(payload, id) {
+      this.$emit("onInput", payload, id);
     },
   },
 };
@@ -71,11 +88,14 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
 }
-.login-form >>> .form-control {
+.login-form >>> .input-container .form-group.required .control-label {
+  display: none;
+}
+.login-form >>> .input-container .form-group .form-control {
   width: 317px;
   height: 40px;
 }
-.login-form >>> .form-control::placeholder {
+.login-form >>> .input-container .form-group .form-control::placeholder {
   font-family: "Inter";
   font-style: normal;
   font-size: 14px;

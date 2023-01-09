@@ -1,153 +1,90 @@
 <template>
-  <div class="request-container">
-    <div class="header">
-      <div class="btn-back" @click="goBack">
-        <img src="@/assets/icon/interfaces/ArrowLeft.png" />
-      </div>
-    </div>
-    <div class="profile-header">
-      <div class="avatar"><img src="@/assets/avatar.png" /></div>
+  <tr>
+    <td class="profile" @click="goToView">
+      <div class="avatar"><img :src="API_URL + item.avatar" /></div>
       <div class="name">
-        <p class="fullname">Trình ngur</p>
-        <p class="position">Front-end Developer</p>
+        <p class="fullname">{{ item.fullname }}</p>
+        <p class="position">{{ item.position }}</p>
       </div>
-    </div>
-    <div class="request-content">
-      <FormView
-        :formData="formData"
-        :currentStep="currentStep"
-        :readonly="readonly"
-        @changeForm="changeForm"
-      />
-    </div>
-    <div class="footer">
-      <ButtonComponent
-        btn-label="Approve"
-        class="btn-approve"
-        @onClick="approveRequest"
-      />
-      <ButtonComponent
-        btn-label="Reject"
-        class="btn-reject"
-        @onClick="rejectRequest"
-      />
-    </div>
-  </div>
+    </td>
+    <td class="city">{{ address }}</td>
+    <td class="salary">{{ item.salary }}đ</td>
+    <td class="created">{{ item.createdAt }}</td>
+    <td class="status">
+      <span :class="statusClass">{{ STATUS[item.status] }}</span>
+    </td>
+  </tr>
 </template>
 
 <script>
-import { formRegister } from "@/constants/register";
-import { mapGetters } from "vuex";
-import ButtonComponent from "@/components/base/ButtonComponent";
-import FormView from "../formRegister/FormView";
+import { API_URL, STATUS, CITY_LIST } from "@/constants";
 export default {
-  components: { ButtonComponent, FormView },
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
+    },
+  },
   data() {
     return {
-      readonly: true,
-      currentStep: 1,
-      formRegister,
-      formData: [],
-      form: {},
+      STATUS,
+      API_URL,
+      CITY_LIST,
     };
   },
   computed: {
-    ...mapGetters({
-      formAccount: "formRegister/getFormAccount",
-      formProfile: "formRegister/getFormProfile",
-      formFinished: "formRegister/getFormFinished",
-    }),
-    isFormAccount() {
-      return this.currentStep === 1;
+    address() {
+      return this.getAddress(this.item.address);
     },
-    isFormProfile() {
-      return this.currentStep === 2;
-    },
-    isFormFinished() {
-      return this.currentStep === 3;
-    },
-    isLastForm() {
-      return this.currentStep === this.formRegister.length;
-    },
-    formName() {
-      return this.formRegister.find((item) => item.step === this.currentStep)
-        .name;
-    },
-    getFormData() {
-      return JSON.parse(
-        JSON.stringify(
-          this.formRegister.find((item) => item.step === this.currentStep).data
-        )
-      );
-    },
-  },
-  watch: {
-    currentStep: {
-      handler() {
-        if (this.isFormAccount && this.formAccount.length > 0) {
-          this.formData = this.formAccount;
-        } else if (this.isFormProfile && this.formProfile.length > 0) {
-          this.formData = this.formProfile;
-        } else if (this.isFormFinished && this.formFinished.length > 0) {
-          this.formData = this.formFinished;
-        } else this.formData = this.getFormData;
-      },
-      immediate: true,
+    statusClass() {
+      return `status-${this.STATUS[this.item.status]}`;
     },
   },
   methods: {
-    changeForm(step) {
-      this.currentStep = step;
+    goToView() {
+      this.$router.push(`/admin/request/${this.item.id}`);
     },
-    goBack() {
-      this.$router.push("/admin/request-list");
+    getAddress(address) {
+      let result = "";
+      this.CITY_LIST.forEach((item) => {
+        if (item.value === address) {
+          result = item.name;
+        }
+      });
+      return result;
     },
-    approveRequest() {},
-    rejectRequest() {},
   },
 };
 </script>
 
 <style scoped>
-.request-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 90vh;
-  background: #fff;
-  padding: 24px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-}
-.header {
-  margin-bottom: 24px;
-}
-.btn-back img {
-  width: 24px;
-  height: 24px;
+tr td.profile {
   cursor: pointer;
 }
-.profile-header {
-  display: flex;
-  align-items: center;
-  background: #f7f7f7;
-  padding: 16px;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.avatar {
-  width: 48px;
-  height: 48px;
-}
-.name .fullname {
+td {
   font-family: "Noto Sans";
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
-  line-height: 30px;
-  color: #333;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px;
+  padding-left: 38px;
+  color: #333333;
+  vertical-align: middle;
 }
-.name .position {
+td.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+td:not(.profile, .city) {
+  text-align: center;
+}
+.avatar img {
+  width: 48px;
+  height: 48px;
+}
+.position {
   font-family: "Noto Sans";
   font-style: normal;
   font-weight: 400;
@@ -155,55 +92,29 @@ export default {
   line-height: 20px;
   color: #333333;
 }
-.request-content >>> .form-container {
-  width: 100%;
-  max-height: 50vh;
-}
-.request-content >>> .footer-btn {
-  display: none;
-}
-.request-container >>> .dropzone-container {
-  display: none;
-}
-.footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: auto;
-}
-.btn-approve {
-  min-width: 102px;
-  height: 40px;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  color: #ffffff;
-  line-height: 24px;
-  background: #48647f;
-  border: 0;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.btn-approve:hover {
-  background: #fff;
-  border: 1px solid #48647f;
-  color: #48647f;
-}
-.btn-reject {
-  min-width: 102px;
-  height: 40px;
+.status {
+  font-family: "Noto Sans JP";
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  color: #f86868;
-  line-height: 24px;
-  background: #ffffff;
-  border: 1px solid #ffbdbd;
-  border-radius: 4px;
-  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
 }
-.btn-reject:hover {
-  background: #f86868;
-  color: #fff;
+.status-Pending {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #fffbeb;
+  color: #dd901d;
+}
+.status-Rejected {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #f0f4f8;
+  color: #f86a6a;
+}
+.status-Approved {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #f0f4f8;
+  color: #627d98;
 }
 </style>

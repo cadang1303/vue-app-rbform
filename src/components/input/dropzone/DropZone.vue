@@ -31,26 +31,10 @@
     >
       {{ msg.error }} {{ msg.success }}
     </span>
-    <div v-if="filesInput.length" class="preview-container">
-      <FileItem
-        v-for="file in filesInput"
-        :key="file.name"
-        :file="file"
-        @onRemove="onRemove(file)"
-      />
-    </div>
-    <ButtonComponent
-      :btnLabel="'Upload'"
-      :disabled="!files.length || files.length < minFiles"
-      class="btn-upload"
-      @onClick="uploadFiles"
-    />
   </div>
 </template>
 
 <script>
-import ButtonComponent from "@/components/base/ButtonComponent";
-import FileItem from "./FileItem";
 import {
   getFileType,
   validateExtension,
@@ -94,10 +78,7 @@ export default {
       required: false,
     },
   },
-  components: {
-    FileItem,
-    ButtonComponent,
-  },
+  components: {},
   data() {
     return {
       isDragging: false,
@@ -247,26 +228,5 @@ export default {
   font-size: 20px;
   display: block;
   cursor: pointer;
-}
-.preview-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  margin-top: 2rem;
-}
-.btn-upload {
-  width: 100px;
-  padding: 10px;
-  margin: 20px 0;
-  background: #5cb85c;
-  border: 1px solid #5cb85c;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-button:disabled {
-  opacity: 0.55;
-  cursor: default;
 }
 </style>
