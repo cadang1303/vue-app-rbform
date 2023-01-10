@@ -12,14 +12,24 @@
       @onFileInput="onFileInput"
       @onRemoveFiles="onRemoveImages"
     />
+    <div v-if="filesInput.length" class="preview-container">
+      <FileItem
+        v-for="file in filesInput"
+        :key="file.name"
+        :file="file"
+        @onRemove="onRemove(file)"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import DropZone from "@/components/input/dropzone/DropZone";
+import FileItem from "./dropzone/FileItem";
 export default {
   components: {
     DropZone,
+    FileItem,
   },
   props: {
     placeholder: {
@@ -70,4 +80,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-top: 2rem;
+}
+</style>

@@ -4,7 +4,7 @@
       <LoginView :form="formData" @onLogin="onLogin" @onInput="onInput" />
     </div>
     <div class="register-container" v-else>
-      <RegisterView @backToLogin="backToLogin" @onSignUp="onSignUp" />
+      <RegisterView @backToLogin="backToLogin" />
     </div>
     <div class="register">
       <div class="register-box">
@@ -24,8 +24,6 @@ import LoginView from "@/components/views/LoginView.vue";
 import ButtonComponent from "@/components/base/ButtonComponent";
 import RegisterView from "@/components/views/RegisterView.vue";
 import { mapActions } from "vuex";
-import axios from "axios";
-import { API_URL } from "@/constants";
 import { formLogin } from "@/constants/login.js";
 
 export default {
@@ -59,35 +57,21 @@ export default {
   methods: {
     ...mapActions({
       onLoading: "loading/setLoading",
+      signUp: "users/onSignUp",
+      logIn: "users/onLogin",
       toast: "notifications/addNotification",
     }),
     onInput(payload, id) {
       this.formData.find((item) => item.id === id).value = payload;
     },
     onLogin() {
-      // this.onLoading(true);
-      axios
-        .post(`${API_URL}auth/login`, this.form)
-        .then(() => {
-          this.toast({
-            type: "success",
-            message: "Login Successfully",
-          });
-          this.formData.forEach((item) => (item.value = ""));
-        })
-        .catch(() => {
-          this.toast({
-            type: "error",
-            message: "Login Failed",
-          });
-        });
+      this.onLoading(true);
+      this.logIn(this.form).then(() =>
+        this.$router.push("/admin/request-list")
+      );
     },
     onRegisterForm() {
-      // this.onLoading(true);
       this.isShow = false;
-    },
-    onSignUp(form) {
-      this.$store.dispatch("users/onSignUp", form);
     },
     backToLogin() {
       this.isShow = true;

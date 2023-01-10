@@ -19,16 +19,18 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      timeout: null,
-    };
+
+    }
   },
-  created() {
-    this.timeout = setTimeout(() => {
-      this.setLoading(false);
-    }, 4000);
-  },
-  beforeDestroy() {
-    clearTimeout(this.timeout);
+  watch: {
+    isShow: {
+      handler(value) {
+        if (value) {
+          setTimeout(() => this.setLoading(false), 4000);
+        }
+      },
+      immediate: true,
+    },
   },
   computed: {
     ...mapGetters({ isShow: "loading/getLoadingState" }),
@@ -44,8 +46,9 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: rgb(202, 202, 202);
-  z-index: 1;
+  background-color: #333;
+  z-index: 9999;
+  animation: fadeInOut ease 4s;
 }
 .lds-roller {
   display: inline-block;
@@ -67,7 +70,7 @@ export default {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #333;
+  background: #eee;
   margin: -4px 0 0 -4px;
 }
 .lds-roller div:nth-child(1) {
@@ -132,6 +135,18 @@ export default {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 </style>

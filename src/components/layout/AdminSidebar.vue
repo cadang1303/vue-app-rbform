@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
     <div class="profile">
-      <div class="avatar"><img src="@/assets/Default-avatar.jpg" /></div>
-      <div class="fullname">Trình ngur</div>
-      <div class="position">Front-end Developer</div>
+      <div class="avatar"><img :src="API_URL + user.avatar" /></div>
+      <div class="fullname">{{ user.fullname }}</div>
+      <!-- <div class="position">{{ position.name }}</div> -->
     </div>
     <div class="links">
       <div v-for="(link, index) in links" :key="index">
@@ -14,14 +14,38 @@
 </template>
 
 <script>
+import { API_URL, JOB_LIST } from "@/constants";
+import { mapGetters } from "vuex";
+
 export default {
+  computed: {
+    ...mapGetters({ user: "users/getLoginUser" }),
+    // position() {
+    //   return this.getPosition(this.user?.position)
+    //     ? this.getPosition(this.user?.position)
+    //     : "";
+    // },
+  },
   data() {
     return {
       links: [
         { name: "Requests", url: "/admin/request-list" },
         { name: "Logout", url: "/" },
       ],
+      API_URL,
     };
+  },
+  methods: {
+    getPosition(data) {
+      data = data.split(",");
+      let position = [];
+      JOB_LIST.forEach((item) => {
+        data.forEach((i) => {
+          if (item.id == i) position.push(item);
+        });
+      });
+      return position[0];
+    },
   },
 };
 </script>

@@ -14,7 +14,7 @@ export default {
   },
   mutations: {
     SAVE_FORM(state, form) {
-      state[form.formName] = form;
+      state[form.formName] = form.formData;
     },
     SAVE_DATA(state, data) {
       state.formRegister = data;

@@ -9,7 +9,7 @@
       <div class="avatar"><img :src="API_URL + userdata.avatar" /></div>
       <div class="name">
         <p class="fullname">{{ userdata.fullname }}</p>
-        <p class="position">{{ userdata.position }}</p>
+        <p class="position">{{ userPosition.name }}</p>
       </div>
     </div>
     <div class="request-content">
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { API_URL } from "@/constants/.";
+import { API_URL, JOB_LIST } from "@/constants/.";
 import { formRegister } from "@/constants/register";
 import { mapActions } from "vuex";
 import ButtonComponent from "@/components/base/ButtonComponent";
@@ -55,13 +55,19 @@ export default {
       formData: [],
       userdata: {},
       API_URL,
+      JOB_LIST,
+      position: [],
     };
   },
   async created() {
     await this.getUserData();
+    this.position = this.toArrayPosition(this.userdata.position);
     this.mapUserdata();
   },
   computed: {
+    userPosition() {
+      return this.getPosition() ? this.getPosition() : "";
+    },
     isApproved() {
       return this.userdata.status === 1;
     },
@@ -80,6 +86,12 @@ export default {
     currentStep: {
       handler() {
         this.formData = this.getFormData;
+        this.formData = this.formData.filter(
+          (item) =>
+            item.key != "password" &&
+            item.key != "confirm" &&
+            item.key != "avatar"
+        );
         this.mapUserdata();
       },
       deep: true,
@@ -87,16 +99,30 @@ export default {
     },
   },
   methods: {
-    ...mapActions({ toast: "notifications/addNotification" }),
+    ...mapActions({ updateStatus: "users/onUpdateStatus" }),
     async getUserData() {
       try {
-        const res = await axios.get(
-          `${API_URL}users/${this.$route.params.id}`
-        );
+        const res = await axios.get(`${API_URL}users/${this.$route.params.id}`);
         this.userdata = res.data;
       } catch (err) {
         console.log(err);
       }
+    },
+    getPosition() {
+      let position = [];
+      JOB_LIST.forEach((i) => {
+        this.position.forEach((p) => {
+          if (p == i.id) {
+            position.push(i);
+          }
+        });
+      });
+      let result = position[0];
+      return result;
+    },
+    toArrayPosition(position) {
+      position = position.split(",");
+      return position;
     },
     mapUserdata() {
       const keys = Object.keys(this.userdata);
@@ -105,7 +131,15 @@ export default {
         keys.forEach((key) => {
           const index = keys.indexOf(key);
           if (item.key === key) {
-            item.value = values[index];
+            if (item.key === "position") {
+              JOB_LIST.forEach((i) => {
+                this.position.forEach((p) => {
+                  if (p == i.id) {
+                    item.value.push(i);
+                  }
+                });
+              });
+            } else item.value = values[index];
           }
         });
       });
@@ -117,44 +151,10 @@ export default {
       this.$router.push("/admin/request-list");
     },
     approveRequest() {
-      axios
-        .post(`${API_URL}users/status`, {
-          id: this.$route.params.id,
-          status: 1,
-        })
-        .then(() => {
-          this.toast({
-            type: "success",
-            message: "Approve User Successfully.",
-          });
-          this.$router.go(-1);
-        })
-        .catch((err) => {
-          this.toast({
-            type: "error",
-            message: err,
-          });
-        });
+      this.updateStatus({ id: this.userdata.id, status: 1 });
     },
     rejectRequest() {
-      axios
-        .post(`${API_URL}users/status`, {
-          id: this.$route.params.id,
-          status: 2,
-        })
-        .then(() => {
-          this.toast({
-            type: "success",
-            message: "Reject User Successfully.",
-          });
-          this.$router.go(-1);
-        })
-        .catch((err) => {
-          this.toast({
-            type: "error",
-            message: err,
-          });
-        });
+      this.updateStatus({ id: this.userdata.id, status: 2 });
     },
   },
 };
@@ -187,7 +187,7 @@ export default {
   gap: 16px;
   margin-bottom: 24px;
 }
-.avatar img{
+.avatar img {
   width: 48px;
   height: 48px;
 }
@@ -214,13 +214,7 @@ export default {
 .request-content >>> .footer-btn {
   display: none;
 }
-.request-container >>> .dropzone-container {
-  display: none;
-}
-.request-container >>> .form-control[name="confirm"] {
-  display: none;
-}
-.request-container >>> .control-label[for="confirm"] {
+.request-content >>> .cancel-select {
   display: none;
 }
 .footer {

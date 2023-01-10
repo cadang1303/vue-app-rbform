@@ -35,6 +35,7 @@ export default {
   font-style: normal;
   position: absolute;
   width: 100%;
+  overflow-y: hidden;
 }
 .options ul li {
   background-color: #f1f5f8;

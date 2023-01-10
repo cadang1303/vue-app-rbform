@@ -4,7 +4,7 @@
       <div class="avatar"><img :src="API_URL + item.avatar" /></div>
       <div class="name">
         <p class="fullname">{{ item.fullname }}</p>
-        <p class="position">{{ item.position }}</p>
+        <p class="position">{{ position.name }}</p>
       </div>
     </td>
     <td class="city">{{ address }}</td>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { API_URL, STATUS, CITY_LIST } from "@/constants";
+import { API_URL, STATUS, CITY_LIST, JOB_LIST } from "@/constants";
 export default {
   props: {
     item: {
@@ -39,10 +39,25 @@ export default {
     statusClass() {
       return `status-${this.STATUS[this.item.status]}`;
     },
+    position() {
+      return this.getPosition(this.item.position)
+        ? this.getPosition(this.item.position)
+        : "";
+    },
   },
   methods: {
     goToView() {
       this.$router.push(`/admin/request/${this.item.id}`);
+    },
+    getPosition(data) {
+      data = data.split(",");
+      let position = [];
+      JOB_LIST.forEach((item) => {
+        data.forEach((i) => {
+          if (item.id == i) position.push(item);
+        });
+      });
+      return position[0];
     },
     getAddress(address) {
       let result = "";

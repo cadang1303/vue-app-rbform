@@ -39,6 +39,7 @@ export default {
       formAccount: "formRegister/getFormAccount",
       formProfile: "formRegister/getFormProfile",
       formFinished: "formRegister/getFormFinished",
+      avatar: "users/getAvatar",
     }),
     isFormAccount() {
       return this.currentStep === 1;
@@ -82,17 +83,19 @@ export default {
     ...mapActions({
       saveForm: "formRegister/saveForm",
       saveData: "formRegister/saveData",
+      uploadAvatar: "users/onUploadFile",
+      signUp: "users/onSignUp",
     }),
     onInputImg(data) {
       this.formData.forEach((i) => {
-        if (i.key === DROPZONE) {
+        if (i.type === DROPZONE) {
           i.value = data;
         }
       });
     },
     onRemoveImage(file) {
       this.formData.forEach((i) => {
-        if (i.key === DROPZONE) {
+        if (i.type === DROPZONE) {
           i.value = i.value.filter((f) => f.name != file.name);
         }
       });
@@ -130,27 +133,49 @@ export default {
 
       for (let i = 0; i < formData.length; i++) {
         if (Array.isArray(formData[i].value)) {
-          if (formData[i].value.length > 0) {
+          if (formData[i].value.length > 0 && formData[i].key != "position") {
             for (let j = 0; j < formData[i].value.length; j++) {
               data[j] = formData[i].value[j];
             }
             this.form[formData[i].key] = data;
             data = {};
-          } else this.form[formData[i].key] = {};
-        } else this.form[formData[i].key] = formData[i].value;
+          } else if (formData[i].key === "position") {
+            this.form[formData[i].key] = this.formData[i].value
+              .map((item) => item.id)
+              .toString();
+          }
+        } else if (this.formData[i].key != "confirm") {
+          this.form[formData[i].key] = this.formData[i].value;
+        }
       }
     },
-    submitForm() {
+    async submitForm() {
       this.saveForm({
         formData: this.formData,
         formName: this.formName,
         isLastForm: this.isLastForm,
       });
       this.toFormJSON(this.formData);
+
       if (this.isLastForm) {
-        this.saveData(this.form);
-        // console.log(this.form);
-        this.$emit("onSignUp", this.form);
+        const avatar = this.form.avatar;
+        this.uploadAvatar(avatar).then(() => {
+          this.form.avatar = this.avatar;
+          console.log(this.form);
+          this.signUp({
+            username: this.form.username,
+            fullname: this.form.fullname,
+            birthday: this.form.birthday,
+            reason: this.form.reason,
+            password: this.form.password,
+            describe_yourself: this.form?.describe_yourself,
+            position: this.form?.position,
+            salary: this.form.salary,
+            avatar: this.form?.avatar,
+            address: this.form?.address,
+            status: 0,
+          });
+        });
         this.$emit("backToLogin");
       } else this.currentStep++;
     },

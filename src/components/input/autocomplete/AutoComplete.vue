@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.autocomplete-container {
   font-family: "Noto Sans";
   font-style: normal;
   position: relative;
