@@ -52,7 +52,7 @@ import {
   validateRequired,
   validateConfirm,
 } from "@/utils/validateForm";
-import { DATE, SALARY } from "@/constants/index";
+import { DATE, PASSWORD, SALARY } from "@/constants/index";
 
 export default {
   props: {
@@ -123,7 +123,7 @@ export default {
       this.$emit("changeForm", this.currentStep - 1);
     },
     goNext() {
-      // this.validate();
+      this.validate();
       let errBag = [];
       this.formData.forEach((item) => {
         if (item.msg) {
@@ -162,14 +162,14 @@ export default {
         if (item.type === SALARY) {
           validateDigit(item);
         }
-        if (item.key === "confirm") {
+        if (item.type === PASSWORD) {
           validateConfirm(this.formData);
         }
       });
     },
     goToStep(step) {
       if (step > this.currentStep) {
-        // this.validate();
+        this.validate();
         let errBag = [];
 
         this.formData.forEach((item) => {

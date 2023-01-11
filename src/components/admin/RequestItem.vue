@@ -9,7 +9,7 @@
     </td>
     <td class="city">{{ address }}</td>
     <td class="salary">{{ item.salary }}đ</td>
-    <td class="created">{{ item.createdAt }}</td>
+    <td class="created">{{ item.created_at }}</td>
     <td class="status">
       <span :class="statusClass">{{ STATUS[item.status] }}</span>
     </td>

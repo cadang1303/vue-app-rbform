@@ -6,7 +6,7 @@
     <div class="register-container" v-else>
       <RegisterView @backToLogin="backToLogin" @onSignUp="onSignUp" />
     </div>
-    <div class="register">
+    <div class="register" v-if="isShow">
       <div class="register-box">
         <p class="register-text">Don't have an account?</p>
         <ButtonComponent

@@ -63,6 +63,11 @@ export default {
 </script>
 
 <style scoped>
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 .form-control {
   padding: 8px 10px;
   width: 130px;

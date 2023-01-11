@@ -115,8 +115,8 @@ export default {
             },
             { root: true }
           );
-          router.go(-1);
         }, 2000);
+        router.go(-1);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });

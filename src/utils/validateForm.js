@@ -54,7 +54,8 @@ export function validateConfirm(formData) {
   let result = true;
   const password = formData.find((item) => item.key === "password");
   const confirm = formData.find((item) => item.key === "confirm");
-  if (!confirm.value === password.value) {
+
+  if (confirm.value != password.value) {
     result = false;
     confirm.msg = VALI_CONFIRM;
   }

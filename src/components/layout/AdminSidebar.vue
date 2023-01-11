@@ -30,7 +30,7 @@ export default {
       return this.user.position ? this.getPosition(this.user.position) : "";
     },
     avatar() {
-      return `${this.API_URL}${this.user.avatar}`;
+      return this.user.avatar ? `${this.API_URL}${this.user.avatar}` : "";
     },
   },
   data() {
