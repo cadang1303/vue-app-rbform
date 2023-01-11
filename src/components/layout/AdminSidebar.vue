@@ -1,13 +1,16 @@
 <template>
   <div class="sidebar">
     <div class="profile">
-      <div class="avatar"><img :src="API_URL + user.avatar" /></div>
+      <div class="avatar"><img :src="avatar" /></div>
       <div class="fullname">{{ user.fullname }}</div>
-      <!-- <div class="position">{{ position.name }}</div> -->
+      <div class="position">{{ position.name }}</div>
     </div>
     <div class="links">
-      <div v-for="(link, index) in links" :key="index">
-        <router-link exact :to="link.url">{{ link.name }}</router-link>
+      <div class="link active" @click="toRequestList">
+        <p class="link-label">Requests</p>
+      </div>
+      <div class="link" @click="onLogOut">
+        <p class="link-label">Logout</p>
       </div>
     </div>
   </div>
@@ -15,27 +18,34 @@
 
 <script>
 import { API_URL, JOB_LIST } from "@/constants";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
+  created() {
+    this.updateUser();
+  },
   computed: {
     ...mapGetters({ user: "users/getLoginUser" }),
-    // position() {
-    //   return this.getPosition(this.user?.position)
-    //     ? this.getPosition(this.user?.position)
-    //     : "";
-    // },
+    position() {
+      return this.user.position ? this.getPosition(this.user.position) : "";
+    },
+    avatar() {
+      return `${this.API_URL}${this.user.avatar}`;
+    },
   },
   data() {
     return {
-      links: [
-        { name: "Requests", url: "/admin/request-list" },
-        { name: "Logout", url: "/" },
-      ],
       API_URL,
     };
   },
   methods: {
+    ...mapActions({ updateUser: "users/getLoggedUser" }),
+    toRequestList() {
+      this.$emit("toRequestList");
+    },
+    onLogOut() {
+      this.$emit("logOut");
+    },
     getPosition(data) {
       data = data.split(",");
       let position = [];
@@ -60,7 +70,7 @@ export default {
   height: 100vh;
   overflow: auto;
 }
-.sidebar a {
+.sidebar .links .link {
   display: block;
   font-family: "Inter";
   font-style: normal;
@@ -71,13 +81,13 @@ export default {
   padding: 10px 126px 10px 24px;
   margin-left: 14px;
   text-decoration: none;
+  cursor: pointer;
 }
-.sidebar .router-link-active {
+.sidebar .links .link.active {
   background-color: rgba(123, 189, 255, 0.16);
-  color: #0063c3;
-  font-weight: bold;
+  color: #0063c4;
 }
-.sidebar a:hover:not(.router-link-active) {
+.sidebar .links .link:hover:not(.active) {
   background-color: #fff;
   color: #555;
 }
@@ -99,10 +109,8 @@ export default {
   height: 150px;
 }
 .profile .avatar > img {
-  width: auto;
-  height: auto;
-  max-height: 100%;
-  max-width: 100%;
+  width: 150px;
+  height: 150px;
   border-radius: 90px;
 }
 

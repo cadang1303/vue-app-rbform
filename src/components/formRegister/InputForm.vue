@@ -72,6 +72,7 @@
         :minFiles="item.validation.minFiles"
         :maxFiles="item.validation.maxFiles"
         :validExt="item.validation.validExt"
+        :readonly="readonly"
         @onInputImg="onInputImg"
         @onRemoveImages="onRemoveImages"
       />

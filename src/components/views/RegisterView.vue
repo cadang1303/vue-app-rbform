@@ -159,23 +159,10 @@ export default {
 
       if (this.isLastForm) {
         const avatar = this.form.avatar;
-        this.uploadAvatar(avatar).then(() => {
-          this.form.avatar = this.avatar;
-          console.log(this.form);
-          this.signUp({
-            username: this.form.username,
-            fullname: this.form.fullname,
-            birthday: this.form.birthday,
-            reason: this.form.reason,
-            password: this.form.password,
-            describe_yourself: this.form?.describe_yourself,
-            position: this.form?.position,
-            salary: this.form.salary,
-            avatar: this.form?.avatar,
-            address: this.form?.address,
-            status: 0,
-          });
-        });
+        await this.uploadAvatar(avatar);
+        this.form.avatar = this.avatar;
+        console.log(this.form);
+        this.$emit("onSignUp", this.form);
         this.$emit("backToLogin");
       } else this.currentStep++;
     },

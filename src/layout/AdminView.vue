@@ -1,6 +1,6 @@
 <template>
   <div class="layout">
-    <AdminSidebar />
+    <AdminSidebar @toRequestList="toRequestList" @logOut="onLogOut" />
     <div class="view-container">
       <router-view></router-view>
     </div>
@@ -9,15 +9,31 @@
 
 <script>
 import AdminSidebar from "@/components/layout/AdminSidebar";
+import { mapActions } from "vuex";
 
 export default {
   components: {
     AdminSidebar,
   },
+  methods: {
+    ...mapActions({ logOut: "users/onLogOut" }),
+    toRequestList() {
+      this.$router.push({ name: "request-list" });
+    },
+    onLogOut() {
+      this.logOut();
+      this.$router.push({ name: "home" });
+    },
+  },
 };
 </script>
 
 <style>
+.layout {
+  margin: 0;
+  padding: 0;
+}
+
 .view-container {
   width: calc(100% - 250px);
   height: 100vh;

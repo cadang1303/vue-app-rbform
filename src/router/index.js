@@ -1,6 +1,6 @@
+import { getUser } from "@/utils/localStorage";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -8,23 +8,39 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () =>
-      import(/* webpackChunkName: "home" */ "@/views/HomePage.vue"),
+    component: () => import("@/views/HomePage.vue"),
+    meta: {
+      guest: true,
+    },
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    redirect: { name: "home" },
   },
   {
     path: "/admin",
     name: "admin",
     component: () => import("@/layout/AdminView.vue"),
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       {
         path: "request-list",
         name: "request-list",
         component: () => import("@/components/admin/RequestList.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
       {
         path: "request/:id",
         name: "request-view",
         component: () => import("@/components/admin/RequestView.vue"),
+        meta: {
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -41,16 +57,14 @@ const router = new VueRouter({
   routes,
 });
 
-let authenticated = store.getters["users/getLoginUser"];
-
 router.beforeEach((to, from, next) => {
-  if (to.name != "home" && authenticated) {
-    next({ name: "home" });
-  } else next();
-
-  // if (to.name == "home" && store.getters["users/getLoginUser"]) {
-  //   next({ name: "admin" });
-  // } else next();
+  let isAuthenticated = getUser();
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return next({ name: "home" });
+  } else if (to.meta.guest && isAuthenticated) {
+    return next({ name: "request-list" });
+  }
+  next();
 });
 
 export default router;

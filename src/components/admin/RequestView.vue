@@ -89,8 +89,8 @@ export default {
         this.formData = this.formData.filter(
           (item) =>
             item.key != "password" &&
-            item.key != "confirm" &&
-            item.key != "avatar"
+            item.key != "confirm" 
+            // && item.key != "avatar"
         );
         this.mapUserdata();
       },

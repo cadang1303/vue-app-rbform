@@ -4,7 +4,7 @@
       <LoginView :form="formData" @onLogin="onLogin" @onInput="onInput" />
     </div>
     <div class="register-container" v-else>
-      <RegisterView @backToLogin="backToLogin" />
+      <RegisterView @backToLogin="backToLogin" @onSignUp="onSignUp" />
     </div>
     <div class="register">
       <div class="register-box">
@@ -56,19 +56,29 @@ export default {
   },
   methods: {
     ...mapActions({
-      onLoading: "loading/setLoading",
       signUp: "users/onSignUp",
       logIn: "users/onLogin",
-      toast: "notifications/addNotification",
     }),
     onInput(payload, id) {
       this.formData.find((item) => item.id === id).value = payload;
     },
     onLogin() {
-      this.onLoading(true);
-      this.logIn(this.form).then(() =>
-        this.$router.push("/admin/request-list")
-      );
+      this.logIn(this.form);
+    },
+    onSignUp(data) {
+      this.signUp({
+        username: data.username,
+        fullname: data.fullname,
+        birthday: data.birthday,
+        reason: data.reason,
+        password: data.password,
+        describe_yourself: data.describe_yourself,
+        position: data.position,
+        salary: data.salary,
+        avatar: data.avatar,
+        address: data.address,
+        status: 0,
+      });
     },
     onRegisterForm() {
       this.isShow = false;

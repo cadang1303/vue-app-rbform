@@ -1,5 +1,7 @@
 import axios from "axios";
 import { API_URL } from "@/constants";
+import router from "@/router";
+import { getUser, removeUser, setUser } from "@/utils/localStorage";
 
 export default {
   namespaced: true,
@@ -24,7 +26,7 @@ export default {
       state.user = null;
     },
     SAVE_AVATAR(state, payload) {
-      state.avatar = payload;
+      state.avatar = "uploads/" + payload;
     },
   },
   actions: {
@@ -32,84 +34,104 @@ export default {
       const res = await axios.get(`${API_URL}users`);
       commit("SET_USER_LIST", res.data);
     },
-    findByUserLogin({ commit }, payload) {
-      axios
-        .get(`${API_URL}users/${payload.id}`)
-        .then((res) => {
-          console.log(res.data);
-          commit("LOG_IN", res.data);
-        })
-        .catch((err) => console.log(err));
+    async getLoggedUser({ commit }) {
+      let id = getUser();
+      try {
+        const res = await axios.get(`${API_URL}users/${id}`);
+        commit("LOG_IN", res.data);
+      } catch (err) {
+        console.log(err);
+      }
     },
-    onLogOut({ commit }) {
+    async findByUserLogin({ commit }, payload) {
+      try {
+        const res = await axios.get(`${API_URL}users/${payload.id}`);
+        commit("LOG_IN", res.data);
+        setUser(res.data.id);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    onLogOut({ commit, dispatch }) {
       commit("LOG_OUT");
+      removeUser();
+      dispatch("loading/setLoading", true, { root: true });
+      setTimeout(() => {
+        dispatch("loading/setLoading", false, { root: true });
+        dispatch(
+          "notifications/addNotification",
+          {
+            type: "success",
+            message: "Logout Successfully",
+          },
+          { root: true }
+        );
+      }, 3000);
     },
-    onLogin({ dispatch }, payload) {
-      axios
-        .post(`${API_URL}auth/login`, payload)
-        .then((res) => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "success",
-                message: "Login Successfully",
-              },
-              { root: true }
-            );
-          }, 3000);
-          dispatch("findByUserLogin", res.data);
-        })
-        .catch(() => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "error",
-                message: "Login Failed",
-              },
-              { root: true }
-            );
-          }, 3000);
-        });
+    async onLogin({ dispatch }, payload) {
+      try {
+        const res = await axios.post(`${API_URL}auth/login`, payload);
+        dispatch("loading/setLoading", true, { root: true });
+        dispatch("findByUserLogin", res.data);
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "success",
+              message: "Login Successfully",
+            },
+            { root: true }
+          );
+          router.push({ name: "request-list" });
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+        dispatch("loading/setLoading", true, { root: true });
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "error",
+              message: `Login Failed: ${err.response.data.message}`,
+            },
+            { root: true }
+          );
+        }, 3000);
+      }
     },
-    onUpdateStatus({ dispatch }, payload) {
-      axios
-        .post(`${API_URL}users/status`, payload)
-        .then((res) => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "success",
-                message: res.data.message,
-              },
-              { root: true }
-            );
-          }, 3000);
-
-          this.$router.go(-1);
-        })
-        .catch((err) => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "error",
-                message: err.data.message,
-              },
-              { root: true }
-            );
-          }, 3000);
-        });
+    async onUpdateStatus({ dispatch }, payload) {
+      try {
+        const res = axios.post(`${API_URL}users/status`, payload);
+        dispatch("loading/setLoading", true, { root: true });
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "success",
+              message: res,
+            },
+            { root: true }
+          );
+          router.go(-1);
+        }, 2000);
+      } catch (err) {
+        console.log(err);
+        dispatch("loading/setLoading", true, { root: true });
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "error",
+              message: "Update status failed",
+            },
+            { root: true }
+          );
+        }, 3000);
+      }
     },
     async onUploadFile({ commit }, payload) {
       let formData = new FormData();
@@ -117,43 +139,43 @@ export default {
         formData.append("file", payload[0]);
         try {
           const res = await axios.post(`${API_URL}users/upload`, formData);
-          commit("SAVE_AVATAR", res.data.path);
+          commit("SAVE_AVATAR", res.data.filename);
         } catch (err) {
           console.log(err);
         }
       }
     },
-    onSignUp({ dispatch }, data) {
-      axios
-        .post(`${API_URL}auth/signup`, data)
-        .then(() => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "success",
-                message: "Registered Successfully",
-              },
-              { root: true }
-            );
-          }, 3000);
-        })
-        .catch(() => {
-          dispatch("loading/setLoading", true, { root: true });
-          setTimeout(() => {
-            dispatch("loading/setLoading", false, { root: true });
-            dispatch(
-              "notifications/addNotification",
-              {
-                type: "error",
-                message: "Register Failed",
-              },
-              { root: true }
-            );
-          }, 3000);
-        });
+    async onSignUp({ dispatch }, data) {
+      try {
+        const res = await axios.post(`${API_URL}auth/signup`, data);
+        console.log(res);
+        dispatch("loading/setLoading", true, { root: true });
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "success",
+              message: "Registered Successfully",
+            },
+            { root: true }
+          );
+        }, 3000);
+      } catch (err) {
+        console.log(err);
+        dispatch("loading/setLoading", true, { root: true });
+        setTimeout(() => {
+          dispatch("loading/setLoading", false, { root: true });
+          dispatch(
+            "notifications/addNotification",
+            {
+              type: "error",
+              message: "Register Failed",
+            },
+            { root: true }
+          );
+        }, 3000);
+      }
     },
   },
 };

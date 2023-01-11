@@ -1,6 +1,7 @@
 <template>
   <div class="form-container">
     <DropZone
+      v-if="!readonly"
       :placeholder="placeholder"
       :triggerText="triggerText"
       :dragText="dragText"
@@ -12,7 +13,7 @@
       @onFileInput="onFileInput"
       @onRemoveFiles="onRemoveImages"
     />
-    <div v-if="filesInput.length" class="preview-container">
+    <div v-if="filesInput.length && !readonly" class="preview-container">
       <FileItem
         v-for="file in filesInput"
         :key="file.name"
@@ -20,11 +21,13 @@
         @onRemove="onRemove(file)"
       />
     </div>
+    <img v-if="readonly" class="preview-img" :src="imgSrc" />
   </div>
 </template>
 
 <script>
 import DropZone from "@/components/input/dropzone/DropZone";
+import { API_URL } from "@/constants";
 import FileItem from "./dropzone/FileItem";
 export default {
   components: {
@@ -49,8 +52,7 @@ export default {
       required: false,
     },
     filesInput: {
-      type: Array,
-      default: () => [],
+      type: [Array, String],
     },
     minFiles: {
       type: Number,
@@ -68,6 +70,20 @@ export default {
       type: Array,
       required: false,
     },
+    readonly: {
+      type: Boolean,
+      required: false,
+    },
+  },
+  computed: {
+    imgSrc() {
+      return this.filesInput ? `${this.API_URL}${this.filesInput}` : "";
+    },
+  },
+  data() {
+    return {
+      API_URL,
+    };
   },
   methods: {
     onFileInput(data) {
@@ -86,5 +102,9 @@ export default {
   flex-wrap: wrap;
   flex-direction: row;
   margin-top: 2rem;
+}
+.preview-img {
+  width: 200px;
+  /* height: 200px; */
 }
 </style>
