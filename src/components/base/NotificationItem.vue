@@ -27,7 +27,7 @@ export default {
   created() {
     this.timeout = setTimeout(() => {
       this.removeNotification(this.notification);
-    }, 3000);
+    }, 4000);
   },
   beforeDestroy() {
     clearTimeout(this.timeout);
@@ -55,7 +55,7 @@ p {
   margin-top: 10px;
   padding: 8px 10px;
   border-radius: 4px;
-  animation: fadeInOut 3s;
+  animation: fadeInOut 4s;
 }
 .noti-content .noti-msg {
   font-size: 14px;

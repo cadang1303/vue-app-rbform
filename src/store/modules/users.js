@@ -57,7 +57,7 @@ export default {
       removeUser();
       dispatch("loading/setLoading", true, { root: true });
       setTimeout(() => {
-        dispatch("loading/setLoading", false, { root: true });
+        router.push({ name: "home" });
         dispatch(
           "notifications/addNotification",
           {
@@ -66,13 +66,14 @@ export default {
           },
           { root: true }
         );
-      }, 2000);
+        // dispatch("loading/setLoading", false, { root: true });
+      }, 1500);
     },
     async onLogin({ dispatch }, payload) {
       try {
         const res = await axios.post(`${API_URL}auth/login`, payload);
-        dispatch("loading/setLoading", true, { root: true });
         dispatch("findByUserLogin", res.data);
+        dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
           router.push({ name: "request-list" });
           dispatch(
@@ -83,10 +84,9 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       } catch (err) {
-        console.log(err);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
           dispatch(
@@ -97,8 +97,8 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       }
     },
     async onUpdateStatus({ dispatch }, payload) {
@@ -106,6 +106,7 @@ export default {
         const res = await axios.post(`${API_URL}users/status`, payload);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
+          router.go(-1);
           dispatch(
             "notifications/addNotification",
             {
@@ -114,9 +115,9 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
-        router.go(-1);
+
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });
@@ -129,8 +130,8 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       }
     },
     async onUploadFile({ commit }, payload) {
@@ -158,8 +159,8 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });
@@ -172,8 +173,8 @@ export default {
             },
             { root: true }
           );
-          dispatch("loading/setLoading", false, { root: true });
-        }, 2000);
+          // dispatch("loading/setLoading", false, { root: true });
+        }, 1500);
       }
     },
   },

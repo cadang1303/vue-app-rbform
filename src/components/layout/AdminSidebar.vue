@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="profile">
       <div class="avatar"><img :src="avatar" /></div>
-      <div class="fullname">{{ user.fullname }}</div>
+      <div class="fullname">{{ fullname }}</div>
       <div class="position">{{ position }}</div>
     </div>
     <div class="links">
@@ -18,19 +18,23 @@
 
 <script>
 import { API_URL } from "@/constants";
-import { mapActions, mapGetters } from "vuex";
 
 export default {
-  created() {
-    this.updateUser();
+  props: {
+    user: {
+      type: Object,
+      required: false,
+    },
   },
   computed: {
-    ...mapGetters({ user: "users/getLoginUser" }),
+    fullname() {
+      return this.user?.fullname ? this.user.fullname : "Noname";
+    },
     position() {
-      return this.user.position ? this.getPosition(this.user.position) : "";
+      return this.user?.position ? this.getPosition(this.user.position) : "";
     },
     avatar() {
-      return this.user.avatar ? `${this.API_URL + this.user.avatar}` : "";
+      return this.user?.avatar ? `${this.API_URL + this.user.avatar}` : "";
     },
   },
   data() {
@@ -39,7 +43,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions({ updateUser: "users/getLoggedUser" }),
     toRequestList() {
       this.$emit("toRequestList");
     },

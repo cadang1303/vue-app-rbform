@@ -119,6 +119,7 @@ td:not(.status) {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
+  text-align: center;
 }
 .status-Pending {
   padding: 0 8px;

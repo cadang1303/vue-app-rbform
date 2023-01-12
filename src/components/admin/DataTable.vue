@@ -32,21 +32,6 @@ thead {
 tr {
   height: 64px;
 }
-th.head-name {
-  width: 320px;
-}
-th.head-city {
-  width: 160px;
-}
-th.head-salary {
-  width: 180px;
-}
-/* th.head-created {
-  width: 100px;
-} */
-th.head-status {
-  width: 56px;
-}
 th {
   font-family: "Noto Sans JP";
   font-style: normal;
