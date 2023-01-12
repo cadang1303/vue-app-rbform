@@ -123,7 +123,8 @@ export const formProfile = [
     msg: "",
     validation: {
       required: false,
-      max: 1,
+      maxFiles: 1,
+      validExt: ["jpg", "jpeg", "png", "bmp", "tiff", "webp"],
     },
   },
 ];

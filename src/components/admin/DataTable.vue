@@ -53,12 +53,12 @@ th {
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
-  padding: 16px;
+  padding: 16px 10px;
   padding-left: 38px;
   margin-left: 38px;
   color: #333333;
 }
-th:not(.head-salary, .head-created, .head-status) {
+th:not(.head-status) {
   text-align: left;
 }
 tbody tr td.profile {

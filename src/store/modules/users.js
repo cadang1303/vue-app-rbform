@@ -66,7 +66,7 @@ export default {
           },
           { root: true }
         );
-      }, 3000);
+      }, 2000);
     },
     async onLogin({ dispatch }, payload) {
       try {
@@ -74,7 +74,7 @@ export default {
         dispatch("loading/setLoading", true, { root: true });
         dispatch("findByUserLogin", res.data);
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
+          router.push({ name: "request-list" });
           dispatch(
             "notifications/addNotification",
             {
@@ -83,13 +83,12 @@ export default {
             },
             { root: true }
           );
-          router.push({ name: "request-list" });
-        }, 3000);
+          dispatch("loading/setLoading", false, { root: true });
+        }, 2000);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
           dispatch(
             "notifications/addNotification",
             {
@@ -98,30 +97,30 @@ export default {
             },
             { root: true }
           );
-        }, 3000);
+          dispatch("loading/setLoading", false, { root: true });
+        }, 2000);
       }
     },
     async onUpdateStatus({ dispatch }, payload) {
       try {
-        const res = axios.post(`${API_URL}users/status`, payload);
+        const res = await axios.post(`${API_URL}users/status`, payload);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
           dispatch(
             "notifications/addNotification",
             {
               type: "success",
-              message: res,
+              message: res.data.message,
             },
             { root: true }
           );
+          dispatch("loading/setLoading", false, { root: true });
         }, 2000);
         router.go(-1);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
           dispatch(
             "notifications/addNotification",
             {
@@ -130,7 +129,8 @@ export default {
             },
             { root: true }
           );
-        }, 3000);
+          dispatch("loading/setLoading", false, { root: true });
+        }, 2000);
       }
     },
     async onUploadFile({ commit }, payload) {
@@ -147,11 +147,9 @@ export default {
     },
     async onSignUp({ dispatch }, data) {
       try {
-        const res = await axios.post(`${API_URL}auth/signup`, data);
-        console.log(res);
+        await axios.post(`${API_URL}auth/signup`, data);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
           dispatch(
             "notifications/addNotification",
             {
@@ -160,12 +158,12 @@ export default {
             },
             { root: true }
           );
-        }, 3000);
+          dispatch("loading/setLoading", false, { root: true });
+        }, 2000);
       } catch (err) {
         console.log(err);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
-          dispatch("loading/setLoading", false, { root: true });
           dispatch(
             "notifications/addNotification",
             {
@@ -174,7 +172,8 @@ export default {
             },
             { root: true }
           );
-        }, 3000);
+          dispatch("loading/setLoading", false, { root: true });
+        }, 2000);
       }
     },
   },

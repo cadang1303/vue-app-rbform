@@ -75,7 +75,7 @@ export default {
         describe_yourself: data.describe_yourself,
         position: data.position,
         salary: data.salary,
-        avatar: data.avatar,
+        avatar: data.avatar ? data.avatar : "uploads/Default-avatar.jpg",
         address: data.address,
         status: 0,
       });

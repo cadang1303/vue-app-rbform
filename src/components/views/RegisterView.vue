@@ -141,7 +141,7 @@ export default {
             data = {};
           } else if (formData[i].key === "position") {
             this.form[formData[i].key] = this.formData[i].value
-              .map((item) => item.id)
+              .map((item) => item.name)
               .toString();
           }
         } else if (this.formData[i].key != "confirm") {

@@ -1,5 +1,9 @@
 import { FILE_TYPE } from "@/constants";
 
+export function formatCurrency(input) {
+  return input.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+}
+
 function convertMBtoB(size) {
   return parseFloat(size * 1048576);
 }

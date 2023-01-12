@@ -3,7 +3,7 @@
     <div class="profile">
       <div class="avatar"><img :src="avatar" /></div>
       <div class="fullname">{{ user.fullname }}</div>
-      <div class="position">{{ position.name }}</div>
+      <div class="position">{{ position }}</div>
     </div>
     <div class="links">
       <div class="link active" @click="toRequestList">
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { API_URL, JOB_LIST } from "@/constants";
+import { API_URL } from "@/constants";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -30,7 +30,7 @@ export default {
       return this.user.position ? this.getPosition(this.user.position) : "";
     },
     avatar() {
-      return this.user.avatar ? `${this.API_URL}${this.user.avatar}` : "";
+      return this.user.avatar ? `${this.API_URL + this.user.avatar}` : "";
     },
   },
   data() {
@@ -48,13 +48,7 @@ export default {
     },
     getPosition(data) {
       data = data.split(",");
-      let position = [];
-      JOB_LIST.forEach((item) => {
-        data.forEach((i) => {
-          if (item.id == i) position.push(item);
-        });
-      });
-      return position[0];
+      return data.join(", ");
     },
   },
 };
@@ -129,5 +123,6 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #555;
+  max-width: 250px;
 }
 </style>

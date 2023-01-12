@@ -18,12 +18,17 @@
 </template>
 
 <script>
+import { RECORDS_PER_PAGE } from "@/constants";
 import { mapGetters } from "vuex";
 import DataTable from "./DataTable.vue";
 import RequestItem from "./RequestItem.vue";
 import TablePagination from "./TablePagination.vue";
 export default {
-  components: { RequestItem, DataTable, TablePagination },
+  components: {
+    RequestItem,
+    DataTable,
+    TablePagination,
+  },
   created() {
     this.$store.dispatch("users/loadUserList");
   },
@@ -36,7 +41,7 @@ export default {
   data() {
     return {
       page: 1,
-      perPage: 10,
+      RECORDS_PER_PAGE,
       pages: [],
       from: null,
       to: null,
@@ -49,20 +54,20 @@ export default {
   },
   methods: {
     setPages() {
-      let numberOfPages = Math.ceil(this.users.length / this.perPage);
+      let numberOfPages = Math.ceil(this.users.length / this.RECORDS_PER_PAGE);
       for (let index = 1; index <= numberOfPages; index++) {
         this.pages.push(index);
       }
     },
     paginate(data) {
-      let page = this.page;
-      let perPage = this.perPage;
-      let from = page * perPage - perPage;
-      let to = page * perPage;
+      let from = this.page * this.RECORDS_PER_PAGE - this.RECORDS_PER_PAGE;
+      let to = this.page * this.RECORDS_PER_PAGE;
       this.from = from + 1;
+
       if (to > data.length) {
         this.to = data.length;
       } else this.to = to;
+
       return data.slice(from, to);
     },
     onPreviousPage() {

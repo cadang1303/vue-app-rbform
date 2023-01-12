@@ -18,15 +18,13 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
-    return {
-
-    }
+    return {};
   },
   watch: {
     isShow: {
       handler(value) {
         if (value) {
-          setTimeout(() => this.setLoading(false), 4000);
+          setTimeout(() => this.setLoading(false), 3000);
         }
       },
       immediate: true,
@@ -48,7 +46,7 @@ export default {
   width: 100%;
   background-color: #333;
   z-index: 9999;
-  animation: fadeInOut ease 4s;
+  animation: fadeInOut ease 3s;
 }
 .lds-roller {
   display: inline-block;

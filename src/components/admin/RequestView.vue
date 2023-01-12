@@ -6,10 +6,10 @@
       </div>
     </div>
     <div class="profile-header">
-      <div class="avatar"><img :src="API_URL + userdata.avatar" /></div>
+      <div class="avatar"><img :src="avatar" /></div>
       <div class="name">
         <p class="fullname">{{ userdata.fullname }}</p>
-        <p class="position">{{ userPosition.name }}</p>
+        <p class="position">{{ userPosition }}</p>
       </div>
     </div>
     <div class="request-content">
@@ -74,6 +74,9 @@ export default {
     isRejected() {
       return this.userdata.status === 2;
     },
+    avatar() {
+      return this.userdata.avatar ? `${API_URL + this.userdata.avatar}` : "";
+    },
     getFormData() {
       return JSON.parse(
         JSON.stringify(
@@ -87,10 +90,8 @@ export default {
       handler() {
         this.formData = this.getFormData;
         this.formData = this.formData.filter(
-          (item) =>
-            item.key != "password" &&
-            item.key != "confirm" 
-            // && item.key != "avatar"
+          (item) => item.key != "password" && item.key != "confirm"
+          // && item.key != "avatar"
         );
         this.mapUserdata();
       },
@@ -109,16 +110,7 @@ export default {
       }
     },
     getPosition() {
-      let position = [];
-      JOB_LIST.forEach((i) => {
-        this.position.forEach((p) => {
-          if (p == i.id) {
-            position.push(i);
-          }
-        });
-      });
-      let result = position[0];
-      return result;
+      return this.position.join(", ");
     },
     toArrayPosition(position) {
       position = position.split(",");
@@ -134,7 +126,7 @@ export default {
             if (item.key === "position") {
               JOB_LIST.forEach((i) => {
                 this.position.forEach((p) => {
-                  if (p == i.id) {
+                  if (p == i.name) {
                     item.value.push(i);
                   }
                 });

@@ -4,20 +4,22 @@
       <div class="avatar"><img :src="API_URL + item.avatar" /></div>
       <div class="name">
         <p class="fullname">{{ item.fullname }}</p>
-        <p class="position">{{ position.name }}</p>
+        <p class="position">{{ position }}</p>
       </div>
     </td>
     <td class="city">{{ address }}</td>
-    <td class="salary">{{ item.salary }}đ</td>
-    <td class="created">{{ item.created_at }}</td>
+    <td class="salary">{{ salary }}đ</td>
+    <td class="created">{{ createdAt }}</td>
     <td class="status">
-      <span :class="statusClass">{{ STATUS[item.status] }}</span>
+      <span :class="statusClass">{{ status }}</span>
     </td>
   </tr>
 </template>
 
 <script>
-import { API_URL, STATUS, CITY_LIST, JOB_LIST } from "@/constants";
+import { API_URL, STATUS, CITY_LIST } from "@/constants";
+import { formatCreatedDate } from "@/utils/time";
+import { formatCurrency } from "@/utils/validate";
 export default {
   props: {
     item: {
@@ -33,16 +35,26 @@ export default {
     };
   },
   computed: {
+    createdAt() {
+      return formatCreatedDate(this.item.created_at);
+    },
+    salary() {
+      return formatCurrency(this.item.salary);
+    },
+    avatar() {
+      return this.item.avatar ? `${API_URL + this.item.avatar}` : "";
+    },
     address() {
       return this.getAddress(this.item.address);
     },
     statusClass() {
-      return `status-${this.STATUS[this.item.status]}`;
+      return `status-${this.status}`;
+    },
+    status() {
+      return this.STATUS[this.item.status];
     },
     position() {
-      return this.getPosition(this.item.position)
-        ? this.getPosition(this.item.position)
-        : "";
+      return this.item.position ? this.getPosition(this.item.position) : "";
     },
   },
   methods: {
@@ -51,13 +63,7 @@ export default {
     },
     getPosition(data) {
       data = data.split(",");
-      let position = [];
-      JOB_LIST.forEach((item) => {
-        data.forEach((i) => {
-          if (item.id == i) position.push(item);
-        });
-      });
-      return position[0];
+      return data.join(", ");
     },
     getAddress(address) {
       let result = "";
@@ -92,8 +98,8 @@ td.profile {
   align-items: center;
   gap: 10px;
 }
-td:not(.profile, .city) {
-  text-align: center;
+td:not(.status) {
+  text-align: left;
 }
 .avatar img {
   width: 48px;
@@ -123,7 +129,7 @@ td:not(.profile, .city) {
 .status-Rejected {
   padding: 0 8px;
   border-radius: 4px;
-  background: #f0f4f8;
+  background: #ffe3e3;
   color: #f86a6a;
 }
 .status-Approved {

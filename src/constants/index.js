@@ -47,4 +47,4 @@ export const STATUS = {
   2: "Rejected",
 };
 
-export const TABLE_MAX_RECORDS = 10;
+export const RECORDS_PER_PAGE = 10;
