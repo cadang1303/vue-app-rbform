@@ -3,10 +3,10 @@
     :class="typeClass"
     class="noti-container"
     :style="animation"
-    @click="removeNotification(notification)"
+    @click="removeNotification(id)"
   >
     <div class="noti-content">
-      <p class="noti-msg">{{ notification.message }}</p>
+      <p class="noti-msg">{{ message }}</p>
     </div>
   </div>
 </template>
@@ -17,8 +17,20 @@ import { mapActions } from "vuex";
 
 export default {
   props: {
-    notification: {
-      type: Object,
+    id: {
+      type: String,
+    },
+    position: {
+      type: String,
+      default: () => POSITION_LIST.TOP_RIGHT,
+    },
+    type: {
+      type: String,
+      default: () => "info",
+    },
+    message: {
+      type: String,
+      required: false,
     },
   },
   data() {
@@ -28,11 +40,11 @@ export default {
     };
   },
   watch: {
-    "notification.position": {
+    position: {
       handler(value) {
-        if (this.notification.position != "") {
+        if (this.position != POSITION_LIST.TOP_RIGHT || this.position) {
           this.$emit("onSetPosition", value);
-        } else this.$emit("onSetPosition", POSITION_LIST.TOP_RIGHT);
+        }
       },
       immediate: true,
       deep: true,
@@ -40,7 +52,7 @@ export default {
   },
   created() {
     this.timeout = setTimeout(() => {
-      this.removeNotification(this.notification);
+      this.removeNotification(this.id);
     }, this.TOAST_TIME);
   },
   beforeDestroy() {
@@ -48,7 +60,7 @@ export default {
   },
   computed: {
     typeClass() {
-      return `noti-${this.notification.type}`;
+      return `noti-${this.type}`;
     },
     animation() {
       return `animation: fadeInOut ${this.TOAST_TIME / 1000}s;`;

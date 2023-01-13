@@ -62,16 +62,7 @@ export default {
     },
     onSignUp(data) {
       this.signUp({
-        username: data.username,
-        fullname: data.fullname,
-        birthday: data.birthday,
-        reason: data.reason,
-        password: data.password,
-        describe_yourself: data.describe_yourself,
-        position: data.position,
-        salary: data.salary,
-        avatar: data.avatar,
-        address: data.address,
+        ...data,
         status: 0,
       });
     },

@@ -3,7 +3,10 @@
     <NotificationItem
       v-for="item in notifications"
       :key="item.id"
-      :notification="item"
+      :type="item.type"
+      :id="item.id"
+      :message="item.message"
+      :position="item.position"
       @onSetPosition="onSetPosition"
     />
   </div>
@@ -38,9 +41,7 @@ export default {
   position: fixed;
   z-index: 999;
 }
-
 .top-right {
-  position: fixed;
   top: 0;
   right: 0;
   margin-top: 10px;

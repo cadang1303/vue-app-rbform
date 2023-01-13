@@ -13,18 +13,18 @@ export default {
         id: (Math.random().toString(36) + Date.now().toString(36)).substring(2),
       });
     },
-    REMOVE_NOTIFICATION(state, notification) {
+    REMOVE_NOTIFICATION(state, id) {
       state.notifications = state.notifications.filter((noti) => {
-        return noti.id != notification.id;
+        return noti.id != id;
       });
     },
   },
   actions: {
-    addNotification({ commit }, notification) {
-      commit("PUSH_NOTIFICATION", notification);
+    addNotification({ commit }, payload) {
+      commit("PUSH_NOTIFICATION", payload);
     },
-    removeNotification({ commit }, notification) {
-      commit("REMOVE_NOTIFICATION", notification);
+    removeNotification({ commit }, payload) {
+      commit("REMOVE_NOTIFICATION", payload);
     },
   },
 };

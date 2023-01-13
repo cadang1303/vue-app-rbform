@@ -157,9 +157,12 @@ export default {
       this.toFormJSON(this.formData);
 
       if (this.isLastForm) {
-        const avatar = this.form.avatar;
-        await this.uploadAvatar(avatar);
-        this.form.avatar = this.avatar;
+        if (this.form.avatar) {
+          const avatar = this.form.avatar;
+          await this.uploadAvatar(avatar);
+          this.form.avatar = this.avatar;
+        } else delete this.form.avatar;
+
         // console.log(this.form);
         this.$emit("onSignUp", this.form);
         this.$emit("backToLogin");

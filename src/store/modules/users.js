@@ -65,7 +65,6 @@ export default {
           },
           { root: true }
         );
-        // dispatch("loading/setLoading", false, { root: true });
       }, 1500);
     },
     async onLogin({ dispatch }, payload) {
@@ -83,7 +82,6 @@ export default {
             },
             { root: true }
           );
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       } catch (err) {
         dispatch("loading/setLoading", true, { root: true });
@@ -93,10 +91,10 @@ export default {
             {
               type: "error",
               message: `Login Failed: ${err.response.data.message}`,
+              // position: "center",
             },
             { root: true }
           );
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       }
     },
@@ -114,8 +112,6 @@ export default {
             },
             { root: true }
           );
-
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       } catch (err) {
         console.log(err);
@@ -129,7 +125,6 @@ export default {
             },
             { root: true }
           );
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       }
     },
@@ -148,7 +143,6 @@ export default {
     async onSignUp({ dispatch }, data) {
       try {
         const res = await axios.post("auth/signup", data);
-        // console.log(res);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
           dispatch(
@@ -159,7 +153,6 @@ export default {
             },
             { root: true }
           );
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       } catch (err) {
         console.log(err);
@@ -173,7 +166,6 @@ export default {
             },
             { root: true }
           );
-          // dispatch("loading/setLoading", false, { root: true });
         }, 1500);
       }
     },
