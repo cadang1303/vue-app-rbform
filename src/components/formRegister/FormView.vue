@@ -84,7 +84,7 @@ export default {
       return this.currentStep === this.formRegister.length;
     },
     getSubmitBtn() {
-      return this.isLastForm ? "Complete" : "Next";
+      return this.isLastForm ? "Finish" : "Next";
     },
   },
   watch: {

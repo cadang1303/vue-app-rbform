@@ -2,6 +2,7 @@
   <div
     :class="typeClass"
     class="noti-container"
+    :style="animation"
     @click="removeNotification(notification)"
   >
     <div class="noti-content">
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+import { TOAST_TIME } from "@/constants";
 import { mapActions } from "vuex";
 
 export default {
@@ -22,12 +24,13 @@ export default {
   data() {
     return {
       timeout: null,
+      TOAST_TIME,
     };
   },
   created() {
     this.timeout = setTimeout(() => {
       this.removeNotification(this.notification);
-    }, 4000);
+    }, this.TOAST_TIME);
   },
   beforeDestroy() {
     clearTimeout(this.timeout);
@@ -36,6 +39,9 @@ export default {
     typeClass() {
       return `noti-${this.notification.type}`;
     },
+    animation() {
+      return `animation: fadeInOut ${this.TOAST_TIME / 1000}s;`;
+    },
   },
   methods: {
     ...mapActions("notifications", ["removeNotification"]),
@@ -43,7 +49,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 p {
   margin: 0;
 }
@@ -52,10 +58,8 @@ p {
   align-items: center;
   justify-content: center;
   height: 48px;
-  margin-top: 10px;
   padding: 8px 10px;
   border-radius: 4px;
-  animation: fadeInOut 4s;
 }
 .noti-content .noti-msg {
   font-size: 14px;

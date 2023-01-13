@@ -48,3 +48,13 @@ export const STATUS = {
 };
 
 export const RECORDS_PER_PAGE = 10;
+export const POSITION_LIST = {
+  TOP_RIGHT: "top-right",
+  BOT_RIGHT: "bot-right",
+  CENTER: "center",
+};
+export const TOAST_POSITION = POSITION_LIST.TOP_RIGHT;
+
+export const LOADING_TIME = 2000;
+export const TIMEOUT = 1500;
+export const TOAST_TIME = 4000;

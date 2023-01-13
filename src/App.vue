@@ -1,22 +1,27 @@
 <template>
   <div id="app">
     <SpinLoader class="loading" />
-    <NotificationList />
+    <NotificationList :position="TOAST_POSITION" />
     <router-view />
-
   </div>
 </template>
 
 <script>
 import NotificationList from "@/components/base/NotificationList";
 import SpinLoader from "@/components/base/SpinLoader";
+import { TOAST_POSITION } from "./constants";
+
 export default {
   components: {
     NotificationList,
     SpinLoader,
   },
   name: "App",
-  methods: {},
+  data() {
+    return {
+      TOAST_POSITION,
+    };
+  },
 };
 </script>
 

@@ -6,8 +6,8 @@
     <div class="register-container" v-else>
       <RegisterView @backToLogin="backToLogin" @onSignUp="onSignUp" />
     </div>
-    <div class="register" v-if="isShow">
-      <div class="register-box">
+    <div class="register">
+      <div class="register-box" v-if="isShow">
         <p class="register-text">Don't have an account?</p>
         <ButtonComponent
           btn-label="Register"
@@ -36,12 +36,7 @@ export default {
     };
   },
   created() {
-    this.formData = this.getFormData;
-  },
-  computed: {
-    getFormData() {
-      return JSON.parse(JSON.stringify(formLogin));
-    },
+    this.formData = JSON.parse(JSON.stringify(formLogin));
   },
   watch: {
     formData: {
@@ -75,7 +70,7 @@ export default {
         describe_yourself: data.describe_yourself,
         position: data.position,
         salary: data.salary,
-        avatar: data.avatar ? data.avatar : "uploads/Default-avatar.jpg",
+        avatar: data.avatar,
         address: data.address,
         status: 0,
       });
@@ -103,7 +98,6 @@ export default {
   z-index: -99;
 }
 .login-container {
-  margin-right: 100px;
   z-index: 1;
 }
 .register-container {
@@ -117,6 +111,7 @@ export default {
   height: 270px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
+  margin-left: 50px;
   z-index: 0;
 }
 .register-box {

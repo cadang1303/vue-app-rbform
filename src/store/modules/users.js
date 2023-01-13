@@ -53,11 +53,11 @@ export default {
       }
     },
     onLogOut({ commit, dispatch }) {
-      commit("LOG_OUT");
-      removeUser();
       dispatch("loading/setLoading", true, { root: true });
       setTimeout(() => {
+        removeUser();
         router.push({ name: "home" });
+        commit("LOG_OUT");
         dispatch(
           "notifications/addNotification",
           {
@@ -148,14 +148,15 @@ export default {
     },
     async onSignUp({ dispatch }, data) {
       try {
-        await axios.post(`${API_URL}auth/signup`, data);
+        const res = await axios.post(`${API_URL}auth/signup`, data);
+        // console.log(res);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
           dispatch(
             "notifications/addNotification",
             {
-              type: "success",
-              message: "Registered Successfully",
+              type: res.data.success ? "success" : "error",
+              message: res.data.message,
             },
             { root: true }
           );

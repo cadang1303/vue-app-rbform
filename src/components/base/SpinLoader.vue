@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { LOADING_TIME } from "@/constants";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -24,7 +25,7 @@ export default {
     isShow: {
       handler(value) {
         if (value) {
-          setTimeout(() => this.setLoading(false), 3000);
+          setTimeout(() => this.setLoading(false), LOADING_TIME);
         }
       },
       immediate: true,
@@ -44,7 +45,7 @@ export default {
   position: fixed;
   height: 100%;
   width: 100%;
-  background-color: #333;
+  background-color: rgba(51, 51, 51, 0.65);
   z-index: 9999;
   animation: fadeInOut ease 3s;
 }

@@ -57,13 +57,6 @@ export default {
       return this.formRegister.find((item) => item.step === this.currentStep)
         .name;
     },
-    getFormData() {
-      return JSON.parse(
-        JSON.stringify(
-          this.formRegister.find((item) => item.step === this.currentStep).data
-        )
-      );
-    },
   },
   watch: {
     currentStep: {
@@ -74,7 +67,13 @@ export default {
           this.formData = this.formProfile;
         } else if (this.isFormFinished && this.formFinished.length > 0) {
           this.formData = this.formFinished;
-        } else this.formData = this.getFormData;
+        } else
+          this.formData = JSON.parse(
+            JSON.stringify(
+              this.formRegister.find((item) => item.step === this.currentStep)
+                .data
+            )
+          );
       },
       immediate: true,
     },
@@ -161,7 +160,7 @@ export default {
         const avatar = this.form.avatar;
         await this.uploadAvatar(avatar);
         this.form.avatar = this.avatar;
-        console.log(this.form);
+        // console.log(this.form);
         this.$emit("onSignUp", this.form);
         this.$emit("backToLogin");
       } else this.currentStep++;
@@ -189,6 +188,7 @@ export default {
   padding: 24px 32px;
   max-height: 85%;
   width: 596px;
+  transition: height 0.5s ease-in-out;
 }
 .page-title {
   font-family: "Inter";
@@ -196,5 +196,8 @@ export default {
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
+}
+form-view {
+  transition: width 2s;
 }
 </style>
