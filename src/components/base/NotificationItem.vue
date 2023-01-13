@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { TOAST_TIME } from "@/constants";
+import { POSITION_LIST, TOAST_TIME } from "@/constants";
 import { mapActions } from "vuex";
 
 export default {
@@ -26,6 +26,17 @@ export default {
       timeout: null,
       TOAST_TIME,
     };
+  },
+  watch: {
+    "notification.position": {
+      handler(value) {
+        if (this.notification.position != "") {
+          this.$emit("onSetPosition", value);
+        } else this.$emit("onSetPosition", POSITION_LIST.TOP_RIGHT);
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   created() {
     this.timeout = setTimeout(() => {

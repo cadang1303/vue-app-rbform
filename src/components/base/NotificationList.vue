@@ -4,23 +4,27 @@
       v-for="item in notifications"
       :key="item.id"
       :notification="item"
+      @onSetPosition="onSetPosition"
     />
   </div>
 </template>
 
 <script>
-import { POSITION_LIST } from "@/constants";
 import { mapState } from "vuex";
 import NotificationItem from "./NotificationItem";
 export default {
-  props: {
-    position: {
-      type: String,
-      default: () => POSITION_LIST.TOP_RIGHT,
-    },
+  data() {
+    return {
+      position: "",
+    };
   },
   computed: {
     ...mapState("notifications", ["notifications"]),
+  },
+  methods: {
+    onSetPosition(data) {
+      this.position = data;
+    },
   },
   components: {
     NotificationItem,

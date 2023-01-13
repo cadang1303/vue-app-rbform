@@ -1,5 +1,4 @@
 import axios from "axios";
-import { API_URL } from "@/constants";
 import router from "@/router";
 import { getUser, removeUser, setUser } from "@/utils/localStorage";
 
@@ -31,13 +30,13 @@ export default {
   },
   actions: {
     async loadUserList({ commit }) {
-      const res = await axios.get(`${API_URL}users`);
+      const res = await axios.get("users");
       commit("SET_USER_LIST", res.data);
     },
     async getLoggedUser({ commit }) {
       let id = getUser();
       try {
-        const res = await axios.get(`${API_URL}users/${id}`);
+        const res = await axios.get(`users/${id}`);
         commit("LOG_IN", res.data);
       } catch (err) {
         console.log(err);
@@ -45,7 +44,7 @@ export default {
     },
     async findByUserLogin({ commit }, payload) {
       try {
-        const res = await axios.get(`${API_URL}users/${payload.id}`);
+        const res = await axios.get(`users/${payload.id}`);
         commit("LOG_IN", res.data);
         setUser(res.data.id);
       } catch (err) {
@@ -71,7 +70,7 @@ export default {
     },
     async onLogin({ dispatch }, payload) {
       try {
-        const res = await axios.post(`${API_URL}auth/login`, payload);
+        const res = await axios.post("auth/login", payload);
         dispatch("findByUserLogin", res.data);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
@@ -103,7 +102,7 @@ export default {
     },
     async onUpdateStatus({ dispatch }, payload) {
       try {
-        const res = await axios.post(`${API_URL}users/status`, payload);
+        const res = await axios.post("users/status", payload);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
           router.go(-1);
@@ -139,7 +138,7 @@ export default {
       if (payload) {
         formData.append("file", payload[0]);
         try {
-          const res = await axios.post(`${API_URL}users/upload`, formData);
+          const res = await axios.post("users/upload", formData);
           commit("SAVE_AVATAR", res.data.filename);
         } catch (err) {
           console.log(err);
@@ -148,7 +147,7 @@ export default {
     },
     async onSignUp({ dispatch }, data) {
       try {
-        const res = await axios.post(`${API_URL}auth/signup`, data);
+        const res = await axios.post("auth/signup", data);
         // console.log(res);
         dispatch("loading/setLoading", true, { root: true });
         setTimeout(() => {
