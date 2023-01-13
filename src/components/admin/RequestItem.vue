@@ -79,6 +79,9 @@ export default {
 </script>
 
 <style scoped>
+tr:hover {
+  background: rgba(123, 189, 255, 0.16);
+}
 tr td.profile {
   cursor: pointer;
 }

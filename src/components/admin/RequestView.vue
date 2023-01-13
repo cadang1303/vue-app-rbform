@@ -119,14 +119,16 @@ export default {
         keys.forEach((key) => {
           const index = keys.indexOf(key);
           if (item.key === key) {
-            if (item.key === "position" && this.position) {
-              JOB_LIST.forEach((i) => {
-                this.position.forEach((p) => {
-                  if (p == i.name) {
-                    item.value.push(i);
-                  }
+            if (item.key === "position") {
+              if (this.position) {
+                JOB_LIST.forEach((i) => {
+                  this.position.forEach((p) => {
+                    if (p == i.name) {
+                      item.value.push(i);
+                    }
+                  });
                 });
-              });
+              } else item.value = [];
             } else item.value = values[index];
           }
         });
