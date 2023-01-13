@@ -39,7 +39,7 @@
 
 <script>
 import { API_URL, JOB_LIST } from "@/constants/.";
-import { formRegister } from "@/constants/register";
+import { formRequestView } from "@/constants/request-view";
 import { mapActions } from "vuex";
 import ButtonComponent from "@/components/base/ButtonComponent";
 import FormView from "../formRegister/FormView";
@@ -51,7 +51,7 @@ export default {
     return {
       readonly: true,
       currentStep: 1,
-      formRegister,
+      formRequestView,
       formData: [],
       userdata: {},
       API_URL,
@@ -61,12 +61,11 @@ export default {
   },
   async created() {
     await this.getUserData();
-    this.position = this.toArrayPosition(this.userdata.position);
     this.mapUserdata();
   },
   computed: {
     userPosition() {
-      return this.getPosition() ? this.getPosition() : "";
+      return this.userdata.position ? this.getPosition() : "";
     },
     isApproved() {
       return this.userdata.status === 1;
@@ -77,21 +76,15 @@ export default {
     avatar() {
       return this.userdata.avatar ? `${API_URL + this.userdata.avatar}` : "";
     },
-    getFormData() {
-      return JSON.parse(
-        JSON.stringify(
-          this.formRegister.find((item) => item.step === this.currentStep).data
-        )
-      );
-    },
   },
   watch: {
     currentStep: {
       handler() {
-        this.formData = this.getFormData;
-        this.formData = this.formData.filter(
-          (item) => item.key != "password" && item.key != "confirm"
-          // && item.key != "avatar"
+        this.formData = JSON.parse(
+          JSON.stringify(
+            this.formRequestView.find((item) => item.step === this.currentStep)
+              .data
+          )
         );
         this.mapUserdata();
       },
@@ -105,6 +98,7 @@ export default {
       try {
         const res = await axios.get(`${API_URL}users/${this.$route.params.id}`);
         this.userdata = res.data;
+        this.position = this.toArrayPosition(this.userdata.position);
       } catch (err) {
         console.log(err);
       }
@@ -113,7 +107,9 @@ export default {
       return this.position.join(", ");
     },
     toArrayPosition(position) {
-      position = position.split(",");
+      if (position) {
+        position = position.split(",");
+      }
       return position;
     },
     mapUserdata() {
@@ -123,7 +119,7 @@ export default {
         keys.forEach((key) => {
           const index = keys.indexOf(key);
           if (item.key === key) {
-            if (item.key === "position") {
+            if (item.key === "position" && this.position) {
               JOB_LIST.forEach((i) => {
                 this.position.forEach((p) => {
                   if (p == i.name) {
