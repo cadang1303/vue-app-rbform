@@ -18,7 +18,7 @@ export function formatDate(date) {
 
 export function formatCreatedDate(date) {
   let offsetTz = 7 * 60 * 60 * 1000;
-  date = new Date("2023-01-12T03:20:30.084Z").getTime();
+  date = new Date(date).getTime();
   date = new Date(date + offsetTz);
 
   let month = date.getMonth() + 1;
@@ -33,6 +33,6 @@ export function formatCreatedDate(date) {
   min = (min < 10 ? "0" : "") + min;
 
   let formattedDate = year + "/" + month + "/" + day + " " + hour + ":" + min;
-  
+
   return formattedDate;
 }
