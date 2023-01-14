@@ -191,7 +191,6 @@ export default {
   padding: 24px 32px;
   max-height: 85%;
   width: 596px;
-  transition: height 0.5s ease-in-out;
 }
 .page-title {
   font-family: "Inter";

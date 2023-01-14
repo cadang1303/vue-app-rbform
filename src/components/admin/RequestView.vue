@@ -65,7 +65,7 @@ export default {
   },
   computed: {
     userPosition() {
-      return this.userdata.position ? this.getPosition() : "";
+      return this.userdata.position ? this.getPosition(this.position) : "";
     },
     isApproved() {
       return this.userdata.status === 1;
@@ -103,8 +103,8 @@ export default {
         console.log(err);
       }
     },
-    getPosition() {
-      return this.position.join(", ");
+    getPosition(position) {
+      return position.join(", ");
     },
     toArrayPosition(position) {
       if (position) {

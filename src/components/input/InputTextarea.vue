@@ -81,7 +81,6 @@ export default {
 }
 .form-control-textarea {
   padding: 8px 10px;
-  gap: 10px;
   width: 528px;
   height: 152px;
   background: #ffffff;

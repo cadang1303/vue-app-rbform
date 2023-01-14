@@ -89,6 +89,7 @@ export default {
   z-index: -99;
 }
 .login-container {
+  margin-right: 100px;
   z-index: 1;
 }
 .register-container {
@@ -102,7 +103,7 @@ export default {
   height: 270px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
-  margin-left: 50px;
+  /* margin-left: 50px; */
   z-index: 0;
 }
 .register-box {
