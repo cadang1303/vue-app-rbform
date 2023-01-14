@@ -48,6 +48,20 @@ export default {
   margin-right: 15px;
 }
 
+.top-center {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-top: 10px;
+}
+
+.top-left {
+  top: 0;
+  left: 0;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
 .bot-right {
   bottom: 0;
   right: 0;
@@ -55,9 +69,42 @@ export default {
   margin-bottom: 10px;
 }
 
+.bot-left {
+  bottom: 0;
+  left: 0;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+.bot-center {
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-bottom: 10px;
+}
+
 .center {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.center-left {
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  margin-left: 10px;
+}
+
+.center-right {
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  margin-right: 10px;
+}
+
+.noti-list >>> .noti-container {
+  margin-top: 10px;
+  cursor: pointer;
 }
 </style>

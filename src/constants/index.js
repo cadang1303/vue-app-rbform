@@ -50,7 +50,13 @@ export const STATUS = {
 export const RECORDS_PER_PAGE = 10;
 export const POSITION_LIST = {
   TOP_RIGHT: "top-right",
+  TOP_LEFT: "top-left",
+  TOP_CENTER: "top-center",
   BOT_RIGHT: "bot-right",
+  BOT_LEFT: "bot-left",
+  BOT_CENTER: "bot-center",
+  CENTER_RIGHT: "center-right",
+  CENTER_LEFT: "center-left",
   CENTER: "center",
 };
 export const TOAST_POSITION = POSITION_LIST.TOP_RIGHT;

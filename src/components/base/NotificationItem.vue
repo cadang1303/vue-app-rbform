@@ -75,21 +75,25 @@ export default {
 <style>
 p {
   margin: 0;
+  padding: 0;
 }
 .noti-container {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   height: 48px;
   padding: 8px 10px;
   border-radius: 4px;
 }
+
 .noti-content .noti-msg {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20;
+  line-height: 20px;
   color: #ffffff;
+  height: 100%;
 }
 .noti-success {
   background: #27ae60;
