@@ -106,6 +106,7 @@ export const formProfile = [
     label: "Describe Yourself",
     type: TEXTAREA,
     value: "",
+    onCounter: true,
     msg: "",
     validation: {
       required: false,
@@ -136,6 +137,7 @@ export const formFinished = [
     label: "Reason",
     type: TEXTAREA,
     value: "",
+    onCounter: true,
     msg: "",
     validation: {
       required: true,

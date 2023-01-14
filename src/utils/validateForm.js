@@ -21,7 +21,7 @@ export function validateLength(item) {
   let result = true;
   if (item.value.length > item.validation.maxLength) {
     result = false;
-    item.msg = VALI_LENGTH;
+    item.msg = `${VALI_LENGTH} ${item.validation.maxLength} characters.`;
   }
   return result;
 }

@@ -86,6 +86,7 @@ export const formProfile = [
     readonly: true,
     label: "Describe Yourself",
     type: TEXTAREA,
+    onCounter: true,
     value: "",
     msg: "",
     validation: {
@@ -118,6 +119,7 @@ export const formFinished = [
     readonly: true,
     label: "Reason",
     type: TEXTAREA,
+    onCounter: true,
     value: "",
     msg: "",
     validation: {
