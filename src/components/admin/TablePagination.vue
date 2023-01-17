@@ -3,16 +3,12 @@
     <div class="pagi-text">
       {{ from }}~{{ to }} in total of {{ data.length }} records
     </div>
-    <div :class="{ disabled: isFirstPage }" class="arrow" @click="onPrevious">
+    <button :disabled="isFirstPage" class="arrow" @click="onPrevious">
       <i class="fa fa-chevron-left"></i>
-    </div>
-    <div
-      :class="{ disabled: isLastPage || pagesNotExist }"
-      class="arrow"
-      @click="onNext"
-    >
+    </button>
+    <button :disabled="isLastPage || pagesNotExist" class="arrow" @click="onNext">
       <i class="fa fa-chevron-right"></i>
-    </div>
+    </button>
   </div>
 </template>
 
@@ -37,13 +33,13 @@ export default {
   },
   computed: {
     isFirstPage() {
-      return this.currentPage === 1;
+      return this.currentPage == 1;
     },
     isLastPage() {
-      return this.currentPage === this.pages.length;
+      return this.currentPage == this.pages.length;
     },
     pagesNotExist() {
-      return this.pages.length === 1;
+      return this.pages.length == 1;
     },
   },
   methods: {
@@ -69,11 +65,12 @@ export default {
   line-height: 20px;
 }
 .arrow {
+  border: none;
   font-size: 18px;
   cursor: pointer;
 }
-.disabled {
-  opacity: 0.6;
+.arrow:disabled {
   cursor: default;
+  opacity: 0.6;
 }
 </style>

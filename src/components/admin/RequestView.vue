@@ -96,7 +96,7 @@ export default {
     ...mapActions({ updateStatus: "users/onUpdateStatus" }),
     async getUserData() {
       try {
-        const res = await axios.get(`${API_URL}users/${this.$route.params.id}`);
+        const res = await axios.get(`users/${this.$route.params.id}`);
         this.userdata = res.data;
         this.position = this.toArrayPosition(this.userdata.position);
       } catch (err) {
