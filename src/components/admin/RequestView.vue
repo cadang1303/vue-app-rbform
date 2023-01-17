@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { API_URL, JOB_LIST } from "@/constants/.";
+import { API_URL, JOB_LIST, STATUS } from "@/constants/.";
 import { formRequestView } from "@/constants/request-view";
 import { mapActions } from "vuex";
 import ButtonComponent from "@/components/base/ButtonComponent";
@@ -141,10 +141,10 @@ export default {
       this.$router.push("/admin/request-list");
     },
     approveRequest() {
-      this.updateStatus({ id: this.userdata.id, status: 1 });
+      this.updateStatus({ id: this.userdata.id, status: STATUS["Approved"] });
     },
     rejectRequest() {
-      this.updateStatus({ id: this.userdata.id, status: 2 });
+      this.updateStatus({ id: this.userdata.id, status: STATUS["Rejected"] });
     },
   },
 };

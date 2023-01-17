@@ -25,6 +25,7 @@ import ButtonComponent from "@/components/base/ButtonComponent";
 import RegisterView from "@/components/views/RegisterView.vue";
 import { mapActions } from "vuex";
 import { formLogin } from "@/constants/login.js";
+import { STATUS } from '@/constants';
 
 export default {
   components: { LoginView, ButtonComponent, RegisterView },
@@ -63,7 +64,7 @@ export default {
     onSignUp(data) {
       this.signUp({
         ...data,
-        status: 0,
+        status: STATUS["Pending"],
       });
     },
     onRegisterForm() {

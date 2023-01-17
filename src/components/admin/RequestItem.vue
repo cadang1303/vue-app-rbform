@@ -1,7 +1,7 @@
 <template>
   <tr>
     <td class="profile" @click="goToView">
-      <div class="avatar"><img :src="API_URL + item.avatar" /></div>
+      <div class="avatar"><img :src="avatar"/></div>
       <div class="name">
         <p class="fullname">{{ item.fullname }}</p>
         <p class="position">{{ position }}</p>

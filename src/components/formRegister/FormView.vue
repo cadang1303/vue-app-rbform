@@ -218,7 +218,7 @@ export default {
   border-radius: 4px;
   width: 530px;
   padding: 19px 16px 20px;
-  max-height: 63vh;
+  max-height: 65vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
