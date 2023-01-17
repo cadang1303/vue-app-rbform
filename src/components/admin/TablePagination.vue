@@ -1,10 +1,18 @@
 <template>
   <div class="pagination">
-    <div v-if="isNotFirstPage" class="arrow" @click="onPrevious">&lt;</div>
     <div class="pagi-text">
       {{ from }}~{{ to }} in total of {{ data.length }} records
     </div>
-    <div v-if="isNotLastPage && isPages" class="arrow" @click="onNext">></div>
+    <div :class="{ disabled: isFirstPage }" class="arrow" @click="onPrevious">
+      <i class="fa fa-chevron-left"></i>
+    </div>
+    <div
+      :class="{ disabled: isLastPage || pagesNotExist }"
+      class="arrow"
+      @click="onNext"
+    >
+      <i class="fa fa-chevron-right"></i>
+    </div>
   </div>
 </template>
 
@@ -28,14 +36,14 @@ export default {
     },
   },
   computed: {
-    isNotFirstPage() {
-      return this.currentPage != 1;
+    isFirstPage() {
+      return this.currentPage === 1;
     },
-    isNotLastPage() {
-      return this.currentPage != this.pages.length;
+    isLastPage() {
+      return this.currentPage === this.pages.length;
     },
-    isPages() {
-      return this.pages.length > 1;
+    pagesNotExist() {
+      return this.pages.length === 1;
     },
   },
   methods: {
@@ -52,7 +60,6 @@ export default {
 <style scoped>
 .pagination {
   display: flex;
-  gap: 64px;
 }
 .pagi-text {
   font-family: "Noto Sans";
@@ -62,7 +69,11 @@ export default {
   line-height: 20px;
 }
 .arrow {
-  font-size: 19px;
+  font-size: 18px;
   cursor: pointer;
+}
+.disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 </style>

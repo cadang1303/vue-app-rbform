@@ -2,11 +2,9 @@
   <table class="data-table">
     <thead>
       <tr>
-        <th class="head-name">Fullname</th>
-        <th class="head-city">City</th>
-        <th class="head-salary">Wish Salary</th>
-        <th class="head-created">Created at</th>
-        <th class="head-status">Status</th>
+        <th v-for="head in TABLE_HEADER" :key="head.id" :class="head.name">
+          {{ head.label }}
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -16,7 +14,14 @@
 </template>
 
 <script>
-export default {};
+import { TABLE_HEADER } from "@/constants/request-view";
+export default {
+  data() {
+    return {
+      TABLE_HEADER,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -43,7 +48,7 @@ th {
   margin-left: 38px;
   color: #333333;
 }
-th:not(.head-status) {
+th:not(:last-child) {
   text-align: left;
 }
 tbody tr td.profile {

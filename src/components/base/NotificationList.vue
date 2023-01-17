@@ -44,7 +44,7 @@ export default {
 .top-right {
   top: 0;
   right: 0;
-  margin-top: 10px;
+  /* margin-top: 10px; */
   margin-right: 15px;
 }
 
@@ -52,14 +52,14 @@ export default {
   top: 0;
   left: 50%;
   transform: translate(-50%, 0);
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .top-left {
   top: 0;
   left: 0;
   margin-left: 10px;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .bot-right {

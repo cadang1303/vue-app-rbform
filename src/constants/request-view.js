@@ -166,3 +166,11 @@ export const formRequestView = [
     data: formFinished,
   },
 ];
+
+export const TABLE_HEADER = [
+  { id: 1, name: "head-name", label: "Fullname" },
+  { id: 2, name: "head-city", label: "City" },
+  { id: 3, name: "head-salary", label: "Wish Salary" },
+  { id: 4, name: "head-created", label: "Created at" },
+  { id: 5, name: "head-status", label: "Status" },
+];

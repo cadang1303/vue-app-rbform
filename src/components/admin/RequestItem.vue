@@ -8,7 +8,7 @@
       </div>
     </td>
     <td class="city">{{ address }}</td>
-    <td class="salary">{{ salary }}đ</td>
+    <td class="salary">{{ salary }} đ</td>
     <td class="created">{{ createdAt }}</td>
     <td class="status">
       <span :class="statusClass">{{ status }}</span>
