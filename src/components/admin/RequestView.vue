@@ -43,7 +43,7 @@ import { formRequestView } from "@/constants/request-view";
 import { mapActions } from "vuex";
 import ButtonComponent from "@/components/base/ButtonComponent";
 import FormView from "../formRegister/FormView";
-import axios from "axios";
+import userApi  from "@/configs/axios";
 
 export default {
   components: { ButtonComponent, FormView },
@@ -96,7 +96,7 @@ export default {
     ...mapActions({ updateStatus: "users/onUpdateStatus" }),
     async getUserData() {
       try {
-        const res = await axios.get(`users/${this.$route.params.id}`);
+        const res = await userApi.get(`users/${this.$route.params.id}`);
         this.userdata = res.data;
         this.position = this.toArrayPosition(this.userdata.position);
       } catch (err) {
