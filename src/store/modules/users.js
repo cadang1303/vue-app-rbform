@@ -46,7 +46,6 @@ export default {
       try {
         const res = await userApi.get(`users/${payload.id}`);
         commit("LOG_IN", res.data);
-        setUser(res.data.id);
       } catch (err) {
         console.log(err);
       }
@@ -71,9 +70,10 @@ export default {
       try {
         const res = await userApi.post("auth/login", payload);
         dispatch("findByUserLogin", res.data);
+        setUser(res.data.id);
         dispatch("loading/setLoading", true, { root: true });
+        router.push({ name: "request-list" });
         setTimeout(() => {
-          router.push({ name: "request-list" });
           dispatch(
             "notifications/addNotification",
             {

@@ -57,14 +57,13 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   let isAuthenticated = getUser();
   if (to.meta.requiresAuth && !isAuthenticated) {
     return next({ name: "home" });
   } else if (to.meta.guest && isAuthenticated) {
     return next({ name: "request-list" });
-  }
-  next();
+  } else next();
 });
 
 export default router;
