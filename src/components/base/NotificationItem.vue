@@ -2,7 +2,6 @@
   <div
     :class="typeClass"
     class="noti-container"
-    :style="animation"
     @click="removeNotification(id)"
   >
     <div class="noti-content">
@@ -32,6 +31,14 @@ export default {
       type: String,
       required: false,
     },
+    duration: {
+      type: Number,
+      default: TOAST_TIME,
+    },
+    autoDismissible: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -51,9 +58,11 @@ export default {
     },
   },
   created() {
-    this.timeout = setTimeout(() => {
-      this.removeNotification(this.id);
-    }, this.TOAST_TIME);
+    if (this.autoDismissible) {
+      this.timeout = setTimeout(() => {
+        this.removeNotification(this.id);
+      }, this.duration);
+    }
   },
   beforeDestroy() {
     clearTimeout(this.timeout);
@@ -61,9 +70,6 @@ export default {
   computed: {
     typeClass() {
       return `noti-${this.type}`;
-    },
-    animation() {
-      return `animation: fadeInOut ${this.TOAST_TIME / 1000}s;`;
     },
   },
   methods: {

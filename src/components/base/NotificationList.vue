@@ -5,6 +5,8 @@
       :key="item.id"
       :type="item.type"
       :id="item.id"
+      :autoDismissible="item.autoDismissible"
+      :duration="item.duration"
       :message="item.message"
       :position="item.position"
       @onSetPosition="onSetPosition"

@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <DataTable>
+    <DataTable :headers="TABLE_HEADER">
       <RequestItem v-for="item in displayedRows" :key="item.id" :item="item" />
     </DataTable>
     <div class="table-footer">
@@ -19,6 +19,7 @@
 
 <script>
 import { RECORDS_PER_PAGE } from "@/constants";
+import { TABLE_HEADER } from "@/constants/request-view";
 import { mapGetters } from "vuex";
 import DataTable from "./DataTable.vue";
 import RequestItem from "./RequestItem.vue";
@@ -45,6 +46,7 @@ export default {
       pages: [],
       from: null,
       to: null,
+      TABLE_HEADER,
     };
   },
   watch: {

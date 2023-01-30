@@ -2,7 +2,7 @@
   <table class="data-table">
     <thead>
       <tr>
-        <th v-for="head in TABLE_HEADER" :key="head.id" :class="head.name">
+        <th v-for="head in headers" :key="head.id" :class="head.name">
           {{ head.label }}
         </th>
       </tr>
@@ -14,13 +14,8 @@
 </template>
 
 <script>
-import { TABLE_HEADER } from "@/constants/request-view";
 export default {
-  data() {
-    return {
-      TABLE_HEADER,
-    };
-  },
+  props: ["headers"],
 };
 </script>
 

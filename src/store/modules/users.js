@@ -92,6 +92,8 @@ export default {
               type: "error",
               message: `Login Failed: ${err.response.data.message}`,
               // position: "center",
+              // duration: 5000,
+              autoDismissible: false,
             },
             { root: true }
           );
