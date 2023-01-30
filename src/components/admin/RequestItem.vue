@@ -1,0 +1,145 @@
+<template>
+  <tr>
+    <td class="profile" @click="goToView">
+      <div class="avatar"><img :src="avatar"/></div>
+      <div class="name">
+        <p class="fullname">{{ item.fullname }}</p>
+        <p class="position">{{ position }}</p>
+      </div>
+    </td>
+    <td class="city">{{ address }}</td>
+    <td class="salary">{{ salary }} đ</td>
+    <td class="created">{{ createdAt }}</td>
+    <td class="status">
+      <span :class="statusClass">{{ status }}</span>
+    </td>
+  </tr>
+</template>
+
+<script>
+import { API_URL, STATUS, CITY_LIST } from "@/constants";
+import { formatCreatedDate } from "@/utils/time";
+import { formatCurrency } from "@/utils/validate";
+export default {
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {
+      STATUS,
+      API_URL,
+      CITY_LIST,
+    };
+  },
+  computed: {
+    createdAt() {
+      return formatCreatedDate(this.item.created_at);
+    },
+    salary() {
+      return formatCurrency(this.item.salary);
+    },
+    avatar() {
+      return this.item.avatar ? `${API_URL + this.item.avatar}` : "";
+    },
+    address() {
+      return this.getAddress(this.item.address);
+    },
+    statusClass() {
+      return `status-${this.status}`;
+    },
+    status() {
+      return this.STATUS[this.item.status];
+    },
+    position() {
+      return this.item.position ? this.getPosition(this.item.position) : "";
+    },
+  },
+  methods: {
+    goToView() {
+      this.$router.push(`/admin/request/${this.item.id}`);
+    },
+    getPosition(data) {
+      data = data.split(",");
+      return data.join(", ");
+    },
+    getAddress(address) {
+      let result = "";
+      this.CITY_LIST.forEach((item) => {
+        if (item.value === address) {
+          result = item.name;
+        }
+      });
+      return result;
+    },
+  },
+};
+</script>
+
+<style scoped>
+tr:hover {
+  background: rgba(123, 189, 255, 0.16);
+}
+tr td.profile {
+  cursor: pointer;
+}
+td {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px;
+  padding-left: 38px;
+  color: #333333;
+  vertical-align: middle;
+}
+td.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+td:not(.status) {
+  text-align: left;
+}
+.avatar img {
+  width: 48px;
+  height: 48px;
+}
+.position {
+  font-family: "Noto Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #333333;
+}
+.status {
+  font-family: "Noto Sans JP";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+.status-Pending {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #fffbeb;
+  color: #dd901d;
+}
+.status-Rejected {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #ffe3e3;
+  color: #f86a6a;
+}
+.status-Approved {
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #f0f4f8;
+  color: #627d98;
+}
+</style>
